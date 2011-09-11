@@ -1,7 +1,8 @@
 # Cataloguais - catalog anything
-## Gordon Diggs
 
 Cataloguais is a simple app to catalog and keep track of whatever it is you collect.
+
+Cataloguais est une application simple pour cataloguer ce qu'on collectionne.
 
 ### License
 #### The MIT License (MIT)
