@@ -26,6 +26,8 @@ GEM
     plucky (0.3.8)
       mongo (~> 1.3)
     rack (1.3.2)
+    rack-flash (0.1.2)
+      rack
     sass (3.1.7)
     sinatra (1.2.6)
       rack (~> 1.1)
@@ -45,6 +47,7 @@ DEPENDENCIES
   bson_ext
   haml
   mongo_mapper
+  rack-flash
   sass
   sinatra
   sinatra-config-file

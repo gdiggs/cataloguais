@@ -1,10 +1,25 @@
-%h1 Cataloguais
+!!! 5
+%html
+  %head
+    %title Cataloguais
+  %body
+    %h1 Cataloguais
 
-%table
-  %tr
-    - settings.field_count.times do |i|
-      %th= settings.send("field#{i}")
-  - Item.all.each do |item|
-    %tr
-      - settings.field_count.times do |i|
-        %td= item[:"field#{i}"]
+    - if flash[:notice]
+      .message= flash[:notice]
+
+    #add-new
+      %form{ :action => '/new/', :method => 'post' }
+        - settings.field_count.times do |i|
+          %label= settings.send("field#{i}")
+          %input{ :type => 'text', :name => "item[field#{i}" }
+        %input{ :type => 'submit' }
+
+    %table
+      %tr
+        - settings.field_count.times do |i|
+          %th= settings.send("field#{i}")
+      - Item.all.each do |item|
+        %tr
+          - settings.field_count.times do |i|
+            %td= item[:"field#{i}"]

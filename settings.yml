@@ -1,11 +1,12 @@
 # Field names for the db table, used in the UI table
 # NOTE: Make sure you specify the correct field_count value, otherwise the table/data won't be correct
-field_count: 5
+field_count: 6
 field0: 'Title'
 field1: 'Artist'
 field2: 'Year'
 field3: 'Condition'
 field4: 'Price Paid'
+field5: 'Size'
 
 # database options
 database: 'cataloguais'

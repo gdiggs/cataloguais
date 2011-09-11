@@ -6,6 +6,8 @@ require 'uri'
 
 Bundler.require
 require "sinatra/config_file"
+enable :sessions
+use Rack::Flash
 
 configure :production do
   uri = URI.parse(ENV['MONGOHQ_URL'])
@@ -25,8 +27,11 @@ get '/' do
   haml :index
 end
 
-get '/add_test' do
-
+post '/new/' do
+  puts params[:item]
+  Item.create(params[:item])
+  flash[:notice] = "Item successfully added."
+  redirect '/'
 end
 
 class Item
