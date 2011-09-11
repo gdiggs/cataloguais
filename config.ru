@@ -1,4 +1,6 @@
 require 'rubygems'
+require 'sinatra'
+require 'tilt'
 
 set :run, false
 set :environment, :production
