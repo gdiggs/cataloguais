@@ -1,1 +1,10 @@
 %h1 Cataloguais
+
+%table
+  %tr
+    - settings.field_count.times do |i|
+      %th= settings.send("field#{i}")
+  - Item.all.each do |item|
+    %tr
+      - settings.field_count.times do |i|
+        %td= item[:"field#{i}"]

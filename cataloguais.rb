@@ -4,7 +4,30 @@ require 'rubygems'
 require 'bundler'
 
 Bundler.require
+require "sinatra/config_file"
+
+configure :development do
+  MongoMapper.database = 'cataloguais_dev'
+end
+
+configure do
+  config_file 'settings.yml'
+end
 
 get '/' do
   haml :index
+end
+
+get '/add_test' do
+
+end
+
+class Item
+  include MongoMapper::Document
+
+  # set up the schema for the item
+  settings.field_count.times do |i|
+    key :"field#{i}", String
+  end
+  
 end
