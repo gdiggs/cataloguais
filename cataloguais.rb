@@ -6,12 +6,9 @@ require 'bundler'
 Bundler.require
 require "sinatra/config_file"
 
-configure :development do
-  MongoMapper.database = 'cataloguais_dev'
-end
-
 configure do
   config_file 'settings.yml'
+  MongoMapper.database = settings.database
 end
 
 get '/' do

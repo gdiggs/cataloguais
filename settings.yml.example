@@ -6,3 +6,6 @@ field1: 'Artist'
 field2: 'Year'
 field3: 'Condition'
 field4: 'Price Paid'
+
+# database options
+database: 'cataloguais'
