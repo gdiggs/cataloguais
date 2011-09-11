@@ -8,7 +8,7 @@ require "sinatra/config_file"
 
 configure do
   config_file 'settings.yml'
-  MongoMapper.database = settings.database
+  MongoMapper.database = ENV['MONGOHQ_URL'] || settings.database
 end
 
 get '/' do
