@@ -44,7 +44,6 @@ PLATFORMS
 DEPENDENCIES
   bson_ext
   haml
-  mongo
   mongo_mapper
   sass
   sinatra

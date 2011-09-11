@@ -10,12 +10,15 @@ require "sinatra/config_file"
 configure :production do
   uri = URI.parse(ENV['MONGOHQ_URL'])
   conn = Mongo::Connection.from_uri(ENV['MONGOHQ_URL'])
-  db = conn.db(uri.path.gsub(/^\//, ''))
+  @db_name = uri.path.gsub(/^\//, '')
+  db = conn.db(@db_name)
+  MongoMapper.connection = conn
+  MongoMapper.database = @db_name
 end
 
 configure do
   config_file 'settings.yml'
-  MongoMapper.database = settings.database
+  MongoMapper.database = settings.database unless @db_name
 end
 
 get '/' do
