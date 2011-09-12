@@ -59,5 +59,10 @@ class Item
   settings.fields.each_with_index do |field, i|
     alias :"field#{i}" :"#{field.robotize}"
   end
+
+  # Item.fields returns an array of field names
+  def self.fields
+    self.keys.keys[1..-1]
+  end
   
 end
