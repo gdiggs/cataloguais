@@ -9,10 +9,7 @@
   %body
     %h1 Cataloguais
 
-    - if flash[:notice]
-      .message= flash[:notice]
-    - else
-      .message{ :style => 'display:none;' }
+    .message
 
     .content
       #add-new
@@ -26,11 +23,7 @@
           - settings.fields.each do |field|
             %th= field
         - Item.all.each do |item|
-          %tr
-            - settings.fields.each do |field|
-              %td= item.send(field.robotize)
-            %td.delete
-              %a{ :href => 'javascript:', :rel => "/delete/#{item.id}" } Delete
+          = item_table_row(item)
 
     .footer
       Created by

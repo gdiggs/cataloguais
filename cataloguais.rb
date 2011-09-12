@@ -6,8 +6,6 @@ require 'uri'
 
 Bundler.require
 require "sinatra/config_file"
-enable :sessions
-use Rack::Flash
 
 configure :production do
   uri = URI.parse(ENV['MONGOHQ_URL'])
@@ -33,18 +31,23 @@ get '/' do
 end
 
 post '/new/' do
-  Item.create(params[:item])
-  flash[:notice] = "Item successfully added."
-  redirect '/'
+  item = Item.create(params[:item])
+  {:status => 'success', :message => 'Item successfully added.', :item_markup => item_table_row(item)}.to_json
 end
 
 delete '/delete/:id' do
   Item.find(params[:id]).destroy
-  "Item successfully deleted."
+  {:status => 'success', :message => 'Item successfully deleted.'}.to_json
 end
 
 get '/stylesheet.css' do
   sass :stylesheet
+end
+
+# render the row of the table for a given partial
+def item_table_row(item)
+  @item = item
+  haml :_item, :layout => false
 end
 
 class Object::String

@@ -1,0 +1,6 @@
+%tr
+  - settings.fields.each do |field|
+    %td= @item.send(field.robotize)
+  %td.delete
+    %a{ :href => 'javascript:', :rel => "/delete/#{@item.id}" } Delete
+
