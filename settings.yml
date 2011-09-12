@@ -4,9 +4,9 @@ field_count: 6
 field0: 'Title'
 field1: 'Artist'
 field2: 'Year'
-field3: 'Condition'
-field4: 'Price Paid'
-field5: 'Size'
+field3: 'Size'
+field4: 'Condition'
+field5: 'Price Paid'
 
 # database options
 database: 'cataloguais'

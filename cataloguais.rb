@@ -21,6 +21,11 @@ end
 configure do
   config_file 'settings.yml'
   MongoMapper.database = settings.database unless @db_name
+  # get the fields into a global array
+  set :fields, []
+  settings.field_count.times do |i|
+    settings.fields << settings.send("field#{i}")
+  end
 end
 
 get '/' do
@@ -28,18 +33,25 @@ get '/' do
 end
 
 post '/new/' do
-  puts params[:item]
   Item.create(params[:item])
   flash[:notice] = "Item successfully added."
   redirect '/'
+end
+
+class Object::String
+  # robotize turns a string into something that is a valid hash form,
+  # all lower case and with an _ instead of spaces
+  def robotize
+    return self.downcase.gsub(/\s/, '_')
+  end
 end
 
 class Item
   include MongoMapper::Document
 
   # set up the schema for the item
-  settings.field_count.times do |i|
-    key :"field#{i}", String
+  settings.fields.each do |field|
+    key :"#{field.robotize}", String
   end
   
 end

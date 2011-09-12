@@ -10,16 +10,16 @@
 
     #add-new
       %form{ :action => '/new/', :method => 'post' }
-        - settings.field_count.times do |i|
-          %label= settings.send("field#{i}")
-          %input{ :type => 'text', :name => "item[field#{i}" }
+        - settings.fields.each do |field|
+          %label= field
+          %input{ :type => 'text', :name => "item[#{field.robotize}]" }
         %input{ :type => 'submit' }
 
     %table
       %tr
-        - settings.field_count.times do |i|
-          %th= settings.send("field#{i}")
+        - settings.fields.each do |field|
+          %th= field
       - Item.all.each do |item|
         %tr
-          - settings.field_count.times do |i|
-            %td= item[:"field#{i}"]
+          - settings.fields.each do |field|
+            %td= item[:"#{field.robotize}"]
