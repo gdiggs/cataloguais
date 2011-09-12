@@ -53,5 +53,11 @@ class Item
   settings.fields.each do |field|
     key :"#{field.robotize}", String
   end
+
+  # create aliases, so fields can be accessed
+  # either as `item.title` or `item.field0`
+  settings.fields.each_with_index do |field, i|
+    alias :"field#{i}" :"#{field.robotize}"
+  end
   
 end

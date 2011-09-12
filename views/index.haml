@@ -22,4 +22,4 @@
       - Item.all.each do |item|
         %tr
           - settings.fields.each do |field|
-            %td= item[:"#{field.robotize}"]
+            %td= item.send(field.robotize)
