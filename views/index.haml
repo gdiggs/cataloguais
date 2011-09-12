@@ -2,24 +2,36 @@
 %html
   %head
     %title Cataloguais
+    %link{ :href=>"http://fonts.googleapis.com/css?family=Monoton", :rel=>"stylesheet", :type=>"text/css" }
+    %link{ :rel=>"stylesheet", :type=>"text/css", :href=>"/stylesheet.css"}
   %body
     %h1 Cataloguais
 
     - if flash[:notice]
       .message= flash[:notice]
 
-    #add-new
-      %form{ :action => '/new/', :method => 'post' }
-        - settings.fields.each do |field|
-          %label= field
-          %input{ :type => 'text', :name => "item[#{field.robotize}]" }
-        %input{ :type => 'submit' }
+    .content
+      #add-new
+        %form{ :action => '/new/', :method => 'post' }
+          - settings.fields.each do |field|
+            %input{ :type => 'text', :name => "item[#{field.robotize}]", :placeholder => field }
+          %input{ :type => 'submit', :value => 'Add' }
 
-    %table
-      %tr
-        - settings.fields.each do |field|
-          %th= field
-      - Item.all.each do |item|
+      %table{ :cellspacing => 0 }
         %tr
           - settings.fields.each do |field|
-            %td= item.send(field.robotize)
+            %th= field
+        - Item.all.each do |item|
+          %tr
+            - settings.fields.each do |field|
+              %td= item.send(field.robotize)
+            %td.delete
+              %a{ :href => 'javascript:' } Delete
+
+    .footer
+      Created by
+      %a{ :href => 'http://www.gordondiggs.com/', :target => '_blank' } Gordon Diggs
+      in 2011.
+
+    %a{ :href => "https://github.com/GordonDiggs/cataloguais" }
+      %img{ :style => "position: absolute; top: 0; right: 0; border: 0;", :src=> "https://a248.e.akamai.net/assets.github.com/img/4c7dc970b89fd04b81c8e221ba88ff99a06c6b61/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67", :alt => "Fork me on GitHub" }

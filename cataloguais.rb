@@ -38,6 +38,10 @@ post '/new/' do
   redirect '/'
 end
 
+get '/stylesheet.css' do
+  sass :stylesheet
+end
+
 class Object::String
   # robotize turns a string into something that is a valid hash form,
   # all lower case and with an _ instead of spaces
