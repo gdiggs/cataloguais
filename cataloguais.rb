@@ -38,6 +38,11 @@ post '/new/' do
   redirect '/'
 end
 
+delete '/delete/:id' do
+  Item.find(params[:id]).destroy
+  "Item successfully deleted."
+end
+
 get '/stylesheet.css' do
   sass :stylesheet
 end

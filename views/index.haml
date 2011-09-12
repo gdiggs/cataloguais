@@ -4,11 +4,15 @@
     %title Cataloguais
     %link{ :href=>"http://fonts.googleapis.com/css?family=Monoton", :rel=>"stylesheet", :type=>"text/css" }
     %link{ :rel=>"stylesheet", :type=>"text/css", :href=>"/stylesheet.css"}
+    %script{ :type => 'text/javascript', :src => "/jquery-1.6.3.min.js"}
+    %script{ :type => 'text/javascript', :src => "/scripts.js"}
   %body
     %h1 Cataloguais
 
     - if flash[:notice]
       .message= flash[:notice]
+    - else
+      .message{ :style => 'display:none;' }
 
     .content
       #add-new
@@ -26,7 +30,7 @@
             - settings.fields.each do |field|
               %td= item.send(field.robotize)
             %td.delete
-              %a{ :href => 'javascript:' } Delete
+              %a{ :href => 'javascript:', :rel => "/delete/#{item.id}" } Delete
 
     .footer
       Created by
