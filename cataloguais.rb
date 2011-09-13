@@ -32,7 +32,7 @@ end
 
 post '/new/' do
   item = Item.create(params[:item])
-  {:status => 'success', :message => 'Item successfully added.', :item_markup => item_table_row(item)}.to_json
+  {:status => 'success', :message => 'Item successfully added.', :item_markup => item_table_row(item, true)}.to_json
 end
 
 delete '/delete/:id' do
@@ -45,8 +45,9 @@ get '/stylesheet.css' do
 end
 
 # render the row of the table for a given partial
-def item_table_row(item)
+def item_table_row(item, hidden = false)
   @item = item
+  @hidden = hidden
   haml :_item, :layout => false
 end
 

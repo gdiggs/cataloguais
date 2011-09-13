@@ -1,4 +1,4 @@
-%tr
+%tr{ :style => @hidden ? 'display:none;' : nil }
   - settings.fields.each do |field|
     %td= @item.send(field.robotize)
   %td.delete
