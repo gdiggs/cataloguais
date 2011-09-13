@@ -18,6 +18,7 @@ $(document).ready(function() {
       success: function(response) {
         showMessage(response.message);
         $(response.item_markup).appendTo('table');
+        $form.find('input').val('');
       }
     });
 
