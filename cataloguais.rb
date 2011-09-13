@@ -24,6 +24,9 @@ configure do
   settings.field_count.times do |i|
     settings.fields << settings.send("field#{i}")
   end
+
+  # set the input width based on the number of fields
+  set :item_width, 840 / settings.field_count
 end
 
 get '/' do

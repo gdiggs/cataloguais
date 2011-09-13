@@ -15,7 +15,7 @@
       #add-new
         %form{ :action => '/new/', :method => 'post' }
           - settings.fields.each do |field|
-            %input{ :type => 'text', :name => "item[#{field.robotize}]", :placeholder => field }
+            %input{ :type => 'text', :name => "item[#{field.robotize}]", :placeholder => field, :style => "width:#{settings.item_width}px;" }
           %input{ :type => 'submit', :value => 'Add' }
 
       %table{ :cellspacing => 0 }
