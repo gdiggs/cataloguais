@@ -30,6 +30,7 @@ configure do
 end
 
 get '/' do
+  @sort = params[:sort] || settings.fields[0].robotize
   haml :index
 end
 

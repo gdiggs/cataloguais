@@ -21,8 +21,11 @@
       %table{ :cellspacing => 0 }
         %tr
           - settings.fields.each do |field|
-            %th= field
-        - Item.all.each do |item|
+            %th
+              %a{ :href => "/?sort=#{field.robotize}" }= field
+              - if @sort == field.robotize
+                %span= "\u2191"
+        - Item.all(:order => @sort).each do |item|
           = item_table_row(item)
 
     .footer
