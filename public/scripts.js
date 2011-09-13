@@ -5,7 +5,7 @@ $(document).ready(function() {
     $('.message').html(message).fadeIn(400);
   };
 
-  // bind to form submission (adding an item)
+  // bind to form submission (adding/updating an item)
   // show the message and add the row to the bottom of the table
   $('form').live('submit', function() {
     var $form = $(this);
@@ -17,7 +17,7 @@ $(document).ready(function() {
       dataType: 'json',
       success: function(response) {
         showMessage(response.message);
-        $(response.item_markup).appendTo('table').slideDown(400);
+        $(response.item_markup).appendTo('table');
       }
     });
 
@@ -25,7 +25,7 @@ $(document).ready(function() {
   });
   
   // Delete an item using ajax, then show the message and fade out the row.
-  $('.delete a').live('click', function() {
+  $('a.delete').live('click', function() {
     if(confirm("Are you sure you want to delete this item?")) {
       var $link = $(this);
 
@@ -40,6 +40,21 @@ $(document).ready(function() {
       });
     }
 
+    return false;
+  });
+
+  // edit link shows form row
+  $('a.edit').live('click', function() {
+    var id = $(this).parents('tr').attr('data-id');
+
+    $('tr[data-id=' + id + ']').hide();
+    $('tr[data-id=' + id + '].edit').show();
+    return false;
+  });
+
+  $('a.save').live('click', function() {
+    $(this).parents('tr').find('form').submit();
+    $(this).parents('tr').hide();
     return false;
   });
 

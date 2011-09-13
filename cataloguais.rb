@@ -32,7 +32,13 @@ end
 
 post '/new/' do
   item = Item.create(params[:item])
-  {:status => 'success', :message => 'Item successfully added.', :item_markup => item_table_row(item, true)}.to_json
+  { :status => 'success', :message => 'Item successfully added.', :item_markup => item_table_row(item) }.to_json
+end
+
+post '/update/:id' do
+  item = Item.find(params[:id])
+  item.update_attributes(params[:item])
+  { :status => 'success', :message => 'Item successfully updated.', :item_markup => item_table_row(item) }.to_json
 end
 
 delete '/delete/:id' do
@@ -45,9 +51,8 @@ get '/stylesheet.css' do
 end
 
 # render the row of the table for a given partial
-def item_table_row(item, hidden = false)
+def item_table_row(item)
   @item = item
-  @hidden = hidden
   haml :_item, :layout => false
 end
 

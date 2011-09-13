@@ -42,7 +42,6 @@ a:hover
     :border-collapse collapse
     a
       :color #ccc
-      :font-size 10px
     tr
       td, th
         :border 1px solid #3f3f3f
@@ -51,9 +50,12 @@ a:hover
         :font-weight normal
       td
         :padding 8px 0
-        &.delete
+        &.edit
+          :font-size 10px
           :border none
-          :width 40px
+          :width 30px
+      &.edit
+        :display none
 
 .footer
   :font-size 12px
@@ -62,8 +64,8 @@ a:hover
     :color #888
 
 input::-webkit-input-placeholder
-  :color #111
+  :color #555
 input:-moz-placeholder
-  :color #111
+  :color #555
 
 

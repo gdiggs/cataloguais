@@ -1,6 +1,17 @@
-%tr{ :style => @hidden ? 'display:none;' : nil }
+%tr{ 'data-id' => @item.id }
   - settings.fields.each do |field|
     %td= @item.send(field.robotize)
-  %td.delete
-    %a{ :href => 'javascript:', :rel => "/delete/#{@item.id}" } Delete
+  %td.edit
+    %a.edit{ :href => 'javascript:', :title => 'Edit' } e
+    \/
+    %a.delete{ :href => 'javascript:', :rel => "/delete/#{@item.id}", :title => 'Delete' } d
+
+%tr.edit{ 'data-id' => @item.id }
+  %form{ :action => "/update/#{@item.id}", :method => 'post' }
+    - settings.fields.each do |field|
+      %td
+        %input{ :type => 'text', :name => "item[#{field.robotize}]", :placeholder => field, :value => @item.send(field.robotize) }
+    %td.edit
+      %a.save{ :href => 'javascript:' } save
+
 
