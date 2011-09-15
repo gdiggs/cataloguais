@@ -8,3 +8,8 @@ gem 'mongo_mapper'
 gem 'bson_ext'
 gem 'sinatra-config-file'
 gem 'json'
+
+group :test do
+  gem 'rack-test'
+  gem 'shoulda-context'
+end

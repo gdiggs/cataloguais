@@ -27,7 +27,10 @@ GEM
     plucky (0.3.8)
       mongo (~> 1.3)
     rack (1.3.2)
+    rack-test (0.6.0)
+      rack (>= 1.0)
     sass (3.1.7)
+    shoulda-context (1.0.0.beta1)
     sinatra (1.2.6)
       rack (~> 1.1)
       tilt (>= 1.2.2, < 2.0)
@@ -47,7 +50,9 @@ DEPENDENCIES
   haml
   json
   mongo_mapper
+  rack-test
   sass
+  shoulda-context
   sinatra
   sinatra-config-file
   thin
