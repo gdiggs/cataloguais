@@ -1,6 +1,6 @@
 %tr{ 'data-id' => @item.id }
   - settings.fields.each do |field|
-    %td= @item.send(field.robotize)
+    %td{ :style => "max-width:#{settings.item_width + 20}px" }= @item.send(field.robotize)
   %td.edit
     %a.edit{ :href => 'javascript:', :title => 'Edit' } e
     \/
@@ -10,7 +10,7 @@
   %form{ :action => "/update/#{@item.id}", :method => 'post' }
     - settings.fields.each do |field|
       %td
-        %input{ :type => 'text', :name => "item[#{field.robotize}]", :placeholder => field, :value => @item.send(field.robotize) }
+        %input{ :type => 'text', :name => "item[#{field.robotize}]", :placeholder => field, :value => @item.send(field.robotize), :style => "width:#{settings.item_width}px;" }
     %td.edit
       %a.save{ :href => 'javascript:' } save
 
