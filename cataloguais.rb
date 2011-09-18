@@ -68,6 +68,7 @@ class Object::String
   end
 end
 
+# The Item class holds the data for each catalog entry
 class Item
   include MongoMapper::Document
 
