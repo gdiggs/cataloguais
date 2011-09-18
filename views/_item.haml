@@ -1,10 +1,11 @@
 %tr{ 'data-id' => @item.id }
   - settings.fields.each do |field|
     %td{ :style => "max-width:#{settings.item_width + 20}px" }= @item.send(field.robotize)
-  %td.edit
-    %a.edit{ :href => 'javascript:', :title => 'Edit' } e
-    \/
-    %a.delete{ :href => 'javascript:', :rel => "/delete/#{@item.id}", :title => 'Delete' } d
+  - if session[:editing_enabled]
+    %td.edit
+      %a.edit{ :href => 'javascript:', :title => 'Edit' } e
+      \/
+      %a.delete{ :href => 'javascript:', :rel => "/delete/#{@item.id}", :title => 'Delete' } d
 
 %tr.edit{ 'data-id' => @item.id }
   %form{ :action => "/update/#{@item.id}", :method => 'post' }

@@ -12,11 +12,12 @@
     .message
 
     .content
-      #add-new
-        %form{ :action => '/new/', :method => 'post' }
-          - settings.fields.each do |field|
-            %input{ :type => 'text', :name => "item[#{field.robotize}]", :placeholder => field, :style => "width:#{settings.item_width}px;" }
-          %input{ :type => 'submit', :value => 'Add' }
+      - if session['editing_enabled']
+        #add-new
+          %form{ :action => '/new/', :method => 'post' }
+            - settings.fields.each do |field|
+              %input{ :type => 'text', :name => "item[#{field.robotize}]", :placeholder => field, :style => "width:#{settings.item_width}px;" }
+            %input{ :type => 'submit', :value => 'Add' }
 
       %table{ :cellspacing => 0 }
         %tr
@@ -27,6 +28,17 @@
                 %span= "\u2191"
         - Item.all(:order => @sort).each do |item|
           = item_table_row(item)
+
+      - if ENV['ADMIN_PASSWORD']
+        #toggle-editing
+          - if session['editing_enabled']
+            %a{ :href => '/logout' } Disable Editing
+          - else
+            Editing is disabled.
+            %a.login{ :href => 'javascript:' } Enable now?
+            %form.no-ajax{ :action => '/login', :method => 'post' }
+              %input{ :type => 'password', :name => 'password', :placeholder => 'Password' }
+              %input{ :type => 'submit', :value => 'Enable' }
 
     .footer
       Created by

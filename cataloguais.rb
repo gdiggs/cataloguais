@@ -7,6 +7,8 @@ require 'uri'
 Bundler.require
 require "sinatra/config_file"
 
+enable :sessions
+
 configure :production do
   uri = URI.parse(ENV['MONGOHQ_URL'])
   conn = Mongo::Connection.from_uri(ENV['MONGOHQ_URL'])
@@ -27,6 +29,13 @@ configure do
 
   # set the input width based on the number of fields
   set :item_width, 840 / settings.field_count
+end
+
+before do
+  if ENV['ADMIN_PASSWORD'].nil?
+    warn "!!! Admin password not set - editing will be enabled by default"
+    session['editing_enabled'] = true
+  end
 end
 
 get '/' do
@@ -52,6 +61,16 @@ end
 
 get '/stylesheet.css' do
   sass :stylesheet
+end
+
+post '/login' do
+  session['editing_enabled'] = true if ENV['ADMIN_PASSWORD'] && params[:password] == ENV['ADMIN_PASSWORD']
+  redirect '/'
+end
+
+get '/logout' do
+  session['editing_enabled'] = nil
+  redirect '/'
 end
 
 # render the row of the table for a given partial

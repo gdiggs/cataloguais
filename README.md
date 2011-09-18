@@ -13,6 +13,8 @@ bundle install
 ruby ./cataloguais.rb
 ```
 
+You should also add an `ENV['ADMIN_PASSWORD']` variable if you want to allow editing/adding of items.
+
 ### Configuration
 In development mode, Cataloguais will just look for your mongo instance locally. In production mode, however, you must specify an `ENV['MONGOHQ_URL']` variable to point to the currect mongo instance.
 
@@ -37,6 +39,8 @@ Après avoir installé Mongo et avoir cloné l'application à votre système, on
 bundle install
 ruby ./cataloguais.rb
 ```
+
+On doit aussi créer un `ENV['ADMIN_PASSWORD']` variable si on veut permettre l'addition et l'édition des articles.
 
 ### Configuration
 Dans la mode de developement, Cataloguais utilisera l'instance de mongo local. Dans la mode de production, on doit donner un variable `ENV['MONGOHQ_URL']` pour préciser l'instance de mongo.

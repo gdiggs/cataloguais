@@ -7,7 +7,7 @@ $(document).ready(function() {
 
   // bind to form submission (adding/updating an item)
   // show the message and add the row to the bottom of the table
-  $('form').live('submit', function() {
+  $('form:not(.no-ajax)').live('submit', function() {
     var $form = $(this);
 
     $.ajax({
@@ -57,6 +57,10 @@ $(document).ready(function() {
     $(this).parents('tr').find('form').submit();
     $(this).parents('tr').hide();
     return false;
+  });
+
+  $('a.login').live('click', function() {
+    $('#toggle-editing form').show();
   });
 
 });
