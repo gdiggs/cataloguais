@@ -38,6 +38,13 @@ before do
   end
 end
 
+before /(new|update|delete)/ do
+  unless session['editing_enabled']
+    data = { :status => 'error', :message => 'Hey, Mike! Editing must be enabled to do that!' }.to_json
+    halt data
+  end
+end
+
 get '/' do
   @sort = params[:sort] || settings.fields[0].robotize
   @items = Item.all(:order => @sort)
