@@ -26,11 +26,12 @@
               %a{ :href => "/?sort=#{field.robotize}" }= field
               - if @sort == field.robotize
                 %span= "\u2191"
-        - Item.all(:order => @sort).each do |item|
+        - @items.each do |item|
           = item_table_row(item)
 
       - if ENV['ADMIN_PASSWORD']
         #toggle-editing
+          == #{@items.count} items.
           - if session['editing_enabled']
             %a{ :href => '/logout' } Disable Editing
           - else

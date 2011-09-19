@@ -40,6 +40,7 @@ end
 
 get '/' do
   @sort = params[:sort] || settings.fields[0].robotize
+  @items = Item.all(:order => @sort)
   haml :index
 end
 
