@@ -22,10 +22,7 @@ configure do
   config_file 'settings.yml'
   MongoMapper.database = settings.database unless @db_name
   # get the fields into a global array
-  set :fields, []
-  settings.field_count.times do |i|
-    settings.fields << settings.send("field#{i}")
-  end
+  set :field_count, settings.fields.count
 
   # set the input width based on the number of fields
   set :item_width, 840 / settings.field_count

@@ -1,14 +1,5 @@
 # Field names for the db table, used in the UI table
-# NOTE: Make sure you specify the correct field_count value, otherwise the table/data won't be correct
-field_count: 8
-field0: 'Title'
-field1: 'Artist'
-field2: 'Year'
-field3: 'Label'
-field4: 'Format'
-field5: 'Condition'
-field6: 'Color'
-field7: 'Price Paid'
+fields: ['Title', 'Artist', 'Year', 'Label', 'Format', 'Condition', 'Color', 'Price Paid']
 
 # database options
 database: 'cataloguais'
