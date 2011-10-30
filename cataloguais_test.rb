@@ -116,6 +116,21 @@ class CataloguaisTest < Test::Unit::TestCase
         assert_equal settings.fields.collect{ |field| field.robotize }, Item.fields
       end
     end
+
+    context "#to_s" do
+      setup do
+        @item = Item.last
+        @expected = ""
+        Item.fields.each do |field|
+          @expected << @item.send(field).to_s + ","
+        end
+        @expected.gsub!(/,\z/, '')
+      end
+
+      should "return all the values" do
+        assert_equal @expected, @item.to_s
+      end
+    end
   end
 
 end

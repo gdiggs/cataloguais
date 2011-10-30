@@ -8,6 +8,7 @@ gem 'mongo_mapper'
 gem 'bson_ext'
 gem 'sinatra-config-file'
 gem 'json'
+gem 'tux'
 
 group :test do
   gem 'rack-test'

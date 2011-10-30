@@ -48,6 +48,11 @@ get '/' do
   haml :index
 end
 
+get '/export/' do
+  headers "Content-Disposition" => "attachment;filename=collection_#{Time.now.strftime("%y%m%d%H%M%S")}.csv", "Content-Type" => "application/octet-stream"
+  Item.export
+end
+
 post '/new/' do
   item = Item.create(params[:item])
   { :status => 'success', :message => 'Item successfully added.', :item_markup => item_table_row(item) }.to_json
@@ -107,9 +112,19 @@ class Item
     alias :"field#{i}" :"#{field.robotize}"
   end
 
+  # Export CSV data as a string
+  # First row is headers, with each Item having a row after
+  def self.export
+    (self.fields.join(",") + "\n" + Item.all.join("\n")).gsub(/"/, '')
+  end
+
   # Item.fields returns an array of field names
   def self.fields
     self.keys.keys[1..-1]
   end
+
+  def to_s
+    Item.fields.collect{ |f| self.send(f) }.join(",")
+  end    
   
 end

@@ -32,7 +32,8 @@
 
       - if ENV['ADMIN_PASSWORD']
         #toggle-editing
-          == #{@items.count} items.
+          %span== #{@items.count} items.
+          %a{ :href => '/export/' } Export all items to csv
           - if session['editing_enabled']
             %a{ :href => '/logout' } Disable Editing
           - else
@@ -40,7 +41,7 @@
             %a.login{ :href => 'javascript:' } Enable now?
             %form.no-ajax{ :action => '/login', :method => 'post' }
               %input{ :type => 'password', :name => 'password', :placeholder => 'Password' }
-              %input{ :type => 'submit', :value => 'Enable' }
+              %input{ :type => 'submit', :value => 'Enable' }      
 
     .footer
       Created by
