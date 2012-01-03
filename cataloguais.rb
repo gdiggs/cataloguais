@@ -9,6 +9,14 @@ require "sinatra/config_file"
 
 enable :sessions
 
+class Object::String
+  # robotize turns a string into something that is a valid hash form,
+  # all lower case and with an _ instead of non-word characters
+  def robotize
+    return self.downcase.gsub(/[^a-zA-z0-9]/, '_')
+  end
+end
+
 configure :production do
   uri = URI.parse(ENV['MONGOHQ_URL'])
   conn = Mongo::Connection.from_uri(ENV['MONGOHQ_URL'])
@@ -26,6 +34,14 @@ configure do
 
   # set the input width based on the number of fields
   set :item_width, 840 / settings.field_count
+  
+  # set the default sort value (defaults to first field)
+  if ENV['DEFAULT_SORT']
+    raise "ENV['DEFAULT_SORT'] value (#{ENV['DEFAULT_SORT']}) is not in settings.fields" unless settings.fields.include?(ENV['DEFAULT_SORT'])
+    set :default_sort, ENV['DEFAULT_SORT'].robotize
+  else
+    set :default_sort, settings.fields[0].robotize
+  end
 end
 
 before do
@@ -43,7 +59,7 @@ before /(new|update|delete)/ do
 end
 
 get '/' do
-  @sort = params[:sort] || settings.fields[0].robotize
+  @sort = params[:sort] || settings.default_sort
   @items = Item.all(:order => @sort)
   haml :index
 end
@@ -87,14 +103,6 @@ end
 def item_table_row(item)
   @item = item
   haml :_item, :layout => false
-end
-
-class Object::String
-  # robotize turns a string into something that is a valid hash form,
-  # all lower case and with an _ instead of non-word characters
-  def robotize
-    return self.downcase.gsub(/[^a-zA-z0-9]/, '_')
-  end
 end
 
 # The Item class holds the data for each catalog entry
