@@ -18,8 +18,6 @@ In development mode, Cataloguais will just look for your mongo instance locally.
 
 You should also add an `ENV['ADMIN_PASSWORD']` variable if you want to allow editing/adding of items.
 
-To set a default sorting value, add an `ENV['DEFAULT_SORT']` value. An error will be raised at startup if this value is invalid.
-
 #### Fields
 The fields for a row are specified in `settings.yml`. You can specify field names in human terms safely (for instance, a field name of "Album Title" will translate to the attribute name of "album_title". You can also refer to fields by their number (so `item.field0` will be equivalent to `item.title`). If you want to re-order fields in the table, you can just change the order in the settings file.
 
@@ -46,8 +44,6 @@ ruby ./cataloguais.rb
 Dans la mode de developement, Cataloguais utilisera l'instance de mongo local. Dans la mode de production, on doit donner un variable `ENV['MONGOHQ_URL']` pour préciser l'instance de mongo.
 
 On doit aussi créer un `ENV['ADMIN_PASSWORD']` variable si on veut permettre l'addition et l'édition des articles.
-
-Pour ajouter un valeur de la classification, créez un `ENV['DEFAULT_SORT']` variable. Il y aurait une erreur si ce valeur n'est pas valide.
 
 ### Fields
 Les fields d'une rangée sont données en `settings.yml`. On peut donner des noms pour les attributs dans la langue de l'homme (par exemple, un nom de "Titre d'album" va etre un attribut de "titre_d_album". On peut aussi accéder aux attributs par leur nombre (`item.field0` va etre equivalent à `item.titre`). Si on veut réorganiser les attributs, on peut juste la faire dans le fichier des options.

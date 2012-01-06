@@ -35,13 +35,8 @@ configure do
   # set the input width based on the number of fields
   set :item_width, 840 / settings.field_count
   
-  # set the default sort value (defaults to first field)
-  if ENV['DEFAULT_SORT']
-    raise "ENV['DEFAULT_SORT'] value (#{ENV['DEFAULT_SORT']}) is not in settings.fields" unless settings.fields.include?(ENV['DEFAULT_SORT'])
-    set :default_sort, ENV['DEFAULT_SORT'].robotize
-  else
-    set :default_sort, settings.fields[0].robotize
-  end
+  # robotize the sort order
+  set :sort_order, settings.sort_order.collect {|sort| sort.robotize}
 end
 
 before do
@@ -59,7 +54,11 @@ before /(new|update|delete)/ do
 end
 
 get '/' do
-  @sort = params[:sort] || settings.default_sort
+  @sort = if params[:sort]
+            [params[:sort]] + (settings.sort_order - [params[:sort]])
+          else
+            settings.sort_order
+          end
   @items = Item.all(:order => @sort)
   haml :index
 end
