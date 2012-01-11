@@ -2,7 +2,7 @@
 %html
   %head
     %title Cataloguais
-    %link{ :href=>"http://fonts.googleapis.com/css?family=Monoton", :rel=>"stylesheet", :type=>"text/css" }
+    %link{ :href=>"http://fonts.googleapis.com/css?family=Special+Elite", :rel=>"stylesheet", :type=>"text/css" }
     %link{ :rel=>"stylesheet", :type=>"text/css", :href=>"/stylesheet.css"}
     %link{ :rel=>"icon", :type=>"images/png", :href=>"/icon.png" }
     %script{ :type => 'text/javascript', :src => "/jquery-1.6.3.min.js"}
@@ -17,7 +17,7 @@
         #add-new
           %form{ :action => '/new/', :method => 'post' }
             - settings.fields.each do |field|
-              %input{ :type => 'text', :name => "item[#{field.robotize}]", :placeholder => field, :style => "width:#{settings.item_width}px;" }
+              %input{ :type => 'text', :name => "item[#{field.robotize}]", :placeholder => field }
             %input{ :type => 'submit', :value => 'Add' }
 
       %table{ :cellspacing => 0 }

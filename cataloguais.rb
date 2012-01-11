@@ -28,14 +28,12 @@ configure :production do
 end
 
 configure do
+  ENV['ADMIN_PASSWORD'] = 'h'
   config_file 'settings.yml'
   MongoMapper.database = settings.database unless @db_name
   # get the fields into a global array
   set :field_count, settings.fields.count
 
-  # set the input width based on the number of fields
-  set :item_width, 840 / settings.field_count
-  
   # robotize the sort order
   set :sort_order, settings.sort_order.collect {|sort| sort.robotize}
 end
