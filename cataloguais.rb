@@ -3,6 +3,7 @@
 require 'rubygems'
 require 'bundler'
 require 'uri'
+require 'csv'
 
 Bundler.require
 require "sinatra/config_file"
@@ -46,7 +47,7 @@ before do
   end
 end
 
-before /(new|update|delete)/ do
+before /(new|update|delete|import)/ do
   unless session['editing_enabled']
     data = { :status => 'error', :message => 'Hey, Mike! Editing must be enabled to do that!' }.to_json
     halt data
@@ -82,6 +83,20 @@ end
 delete '/delete/:id' do
   Item.find(params[:id]).destroy
   {:status => 'success', :message => 'Item successfully deleted.'}.to_json
+end
+
+post '/import/' do
+  data = CSV.parse(params[:file][:tempfile].read)
+  headers = data.shift
+
+  data.each do |row|
+    item = Item.new
+    headers.each_with_index do |attr, i|
+      item.write_attribute(attr.robotize, row[i])
+    end
+    item.save
+  end
+  redirect '/'
 end
 
 get '/stylesheet.css' do
