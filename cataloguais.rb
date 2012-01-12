@@ -27,10 +27,6 @@ configure :production do
   MongoMapper.database = @db_name
 end
 
-configure :development do
-  ENV['ADMIN_PASSWORD'] = 'test'
-end
-
 configure do
   config_file 'settings.yml'
   MongoMapper.database = settings.database unless @db_name
