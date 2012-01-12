@@ -9,8 +9,13 @@ h1
   :font-family 'Monoton', cursive
   :color #7ac
 
-a:hover
-  :text-decoration none
+a
+  :color #ccc
+  &:hover
+    :text-decoration none
+
+form
+  :display inline
 
 .message
   :display none
@@ -34,15 +39,6 @@ a:hover
   :border-radius 15px
   input
     :font-size 13px
-  a
-    :color #ccc
-  #toggle-editing
-    :margin-top 20px
-    :font-size 12px
-    form
-      :display none
-    a, span
-      :padding-right 10px
   table
     :width 100%
     :margin-top 20px
@@ -62,14 +58,51 @@ a:hover
           :font-size 10px
           :border none
           :width 30px
+          :background #2f2f2f
       &.edit
         :display none
+      &:nth-child(4n)
+        :background #3f3f3f
+      &:nth-child(4n+1)
+        :background #3f3f3f
+      &:hover
+        :color #7ac
+
+#editing-bar
+  :position fixed
+  :background #222
+  :opacity 0.9
+  :-moz-opacity 0.9
+  :bottom 0
+  :left 0
+  :line-height 20px
+  :width 100%
+  :font-size 12px
+  :border-top 1px solid #111
+  :text-align left
+  :padding 5px
+  form
+    :display none
+    &.search
+      :display inline
+  a, span
+    :padding-right 10px
 
 .footer
   :font-size 12px
   :padding-top 20px
   a
     :color #888
+
+.toggle-controls
+  :position fixed
+  :bottom 0
+  :right 15px
+  :line-height 20px
+  :font-size 12px
+  :background #222
+  :width 80px
+  :padding 5px
 
 input::-webkit-input-placeholder
   :color #555

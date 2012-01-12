@@ -30,21 +30,26 @@
         - @items.each do |item|
           = item_table_row(item)
 
-      - if ENV['ADMIN_PASSWORD']
-        #toggle-editing
-          %span== #{@items.count} items.
-          %a{ :href => '/export/' } Export all items to csv
-          - if session['editing_enabled']
-            %a{ :href => '/logout' } Disable Editing
-            %form.no-ajax{ :action => '/import/', :method => 'post', :style => 'display:inline;', :enctype => 'multipart/form-data'}
-              %input{ :type => 'file', :name => 'file' }
-              %input{ :type => 'submit', :value => 'Import' }
-          - else
-            Editing is disabled.
-            %a.login{ :href => 'javascript:' } Enable now?
-            %form.no-ajax{ :action => '/login', :method => 'post' }
-              %input{ :type => 'password', :name => 'password', :placeholder => 'Password' }
-              %input{ :type => 'submit', :value => 'Enable' }
+    - if ENV['ADMIN_PASSWORD']
+      #editing-bar
+        %span== #{@items.count} items.
+        %a{ :href => '/export/' } Export all items to csv
+        - if session['editing_enabled']
+          %a{ :href => '/logout' } Disable Editing
+          %a.import{ :href => '' } Import csv
+          %form.no-ajax{ :action => '/import/', :method => 'post', :enctype => 'multipart/form-data'}
+            %input{ :type => 'file', :name => 'file' }
+            %input{ :type => 'submit', :value => 'Import' }
+        - else
+          Editing is disabled.
+          %a.login{ :href => '' } Enable now?
+          %form.no-ajax{ :action => '/login', :method => 'post' }
+            %input{ :type => 'password', :name => 'password', :placeholder => 'Password' }
+            %input{ :type => 'submit', :value => 'Enable' }
+        %form.search.no-ajax{ :action => '/', :method => 'get' }
+          %input{ :type => 'text', :name => 'search', :placeholder => 'Search', :value => params[:search] }
+      .toggle-controls
+        %a{ :href => '' } Hide Controls
 
     .footer
       Created by

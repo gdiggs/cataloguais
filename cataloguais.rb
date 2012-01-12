@@ -27,6 +27,10 @@ configure :production do
   MongoMapper.database = @db_name
 end
 
+configure :development do
+  ENV['ADMIN_PASSWORD'] = 'test'
+end
+
 configure do
   config_file 'settings.yml'
   MongoMapper.database = settings.database unless @db_name
@@ -60,7 +64,7 @@ get '/' do
           else
             settings.sort_order
           end
-  @items = Item.all(:order => @sort)
+  @items = Item.all(:order => @sort).select { |item| item.to_s.downcase.include? params[:search].to_s.downcase }
   haml :index
 end
 

@@ -59,8 +59,21 @@ $(document).ready(function() {
     return false;
   });
 
-  $('a.login').live('click', function() {
-    $('#toggle-editing form').show();
+  $('a.login, a.import').live('click', function() {
+    $('#editing-bar form').show();
+    $(this).hide();
+    return false;
+  });
+
+  $('.toggle-controls a').live('click', function() {
+    if($('#editing-bar').is(':visible')) {
+      $('#editing-bar').fadeOut(400);
+      $(this).text('Show Controls');
+    } else {
+      $('#editing-bar').fadeIn(400);
+      $(this).text('Hide Controls');
+    }
+    return false;
   });
 
 });
