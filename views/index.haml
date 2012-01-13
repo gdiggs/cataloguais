@@ -24,7 +24,7 @@
         %tr
           - settings.fields.each do |field|
             %th
-              %a{ :href => "/?sort=#{field.robotize}" }= field
+              %a{ :href => "/?sort=#{field.robotize}&search=#{params[:search]}" }= field
               - if @sort[0] == field.robotize
                 %span= "\u2191"
         - @items.each do |item|
