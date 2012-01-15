@@ -68,10 +68,10 @@ $(document).ready(function() {
   $('.toggle-controls a').live('click', function() {
     if($('#editing-bar').is(':visible')) {
       $('#editing-bar').fadeOut(400);
-      $(this).text('Show Controls');
+      $(this).text('show controls');
     } else {
       $('#editing-bar').fadeIn(400);
-      $(this).text('Hide Controls');
+      $(this).text('hide controls');
     }
     return false;
   });

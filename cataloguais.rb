@@ -27,6 +27,10 @@ configure :production do
   MongoMapper.database = @db_name
 end
 
+configure :development do
+  ENV['ADMIN_PASSWORD'] = 'test'
+end
+
 configure do
   config_file 'settings.yml'
   MongoMapper.database = settings.database unless @db_name
@@ -113,11 +117,51 @@ get '/logout' do
   redirect '/'
 end
 
+get '/graphs/' do
+  get_occurrences
+  get_graph_urls
+  haml :graphs
+end
+
 # render the row of the table for a given partial
 def item_table_row(item)
   @item = item
   haml :_item, :layout => false
 end
+
+# Get the occurrences of values for each field on Item
+def get_occurrences
+  @occurrences = {}
+
+  settings.fields.each { |field| @occurrences[field] = {} }
+
+  Item.all.each do |item|
+    settings.fields.each do |field|
+      value = item.send(field.robotize)
+      if @occurrences[field][value]
+        @occurrences[field][value] += 1
+      else
+        @occurrences[field][value] = 1
+      end
+    end
+  end
+end
+
+# Get the graph urls, given the occurrences already been set
+def get_graph_urls
+  @graph_urls = {}
+  @occurrences.each do |label, data_set|
+    img_src = Gchart.pie(:labels => data_set.keys, :data => data_set.values, :size => '600x400', :bg => '2f2f2f')
+
+    # Request length must be less than 2048, otherwise it will fail
+    if img_src.length < 2048
+      @graph_urls[label] = img_src
+    else
+      warn "Request length for '#{label}' graph is too long. Skipping."
+    end
+  end
+end
+
 
 # The Item class holds the data for each catalog entry
 class Item

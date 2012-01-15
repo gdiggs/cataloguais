@@ -1,60 +1,39 @@
-!!! 5
-%html
-  %head
-    %title Cataloguais
-    %link{ :href=>"http://fonts.googleapis.com/css?family=Monoton", :rel=>"stylesheet", :type=>"text/css" }
-    %link{ :rel=>"stylesheet", :type=>"text/css", :href=>"/stylesheet.css"}
-    %link{ :rel=>"icon", :type=>"images/png", :href=>"/icon.png" }
-    %script{ :type => 'text/javascript', :src => "/jquery-1.6.3.min.js"}
-    %script{ :type => 'text/javascript', :src => "/scripts.js"}
-  %body
-    %h1 Cataloguais
+.content
+  - if session['editing_enabled']
+    #add-new
+      %form{ :action => '/new/', :method => 'post' }
+        - settings.fields.each do |field|
+          %input{ :type => 'text', :name => "item[#{field.robotize}]", :placeholder => field, :style => "width:#{settings.item_width}px;" }
+        %input{ :type => 'submit', :value => 'Add' }
 
-    .message
+  %table{ :cellspacing => 0 }
+    %tr
+      - settings.fields.each do |field|
+        %th
+          %a{ :href => "/?sort=#{field.robotize}&search=#{params[:search]}" }= field
+          - if @sort[0] == field.robotize
+            %span= "\u2191"
+    - @items.each do |item|
+      = item_table_row(item)
 
-    .content
-      - if session['editing_enabled']
-        #add-new
-          %form{ :action => '/new/', :method => 'post' }
-            - settings.fields.each do |field|
-              %input{ :type => 'text', :name => "item[#{field.robotize}]", :placeholder => field, :style => "width:#{settings.item_width}px;" }
-            %input{ :type => 'submit', :value => 'Add' }
-
-      %table{ :cellspacing => 0 }
-        %tr
-          - settings.fields.each do |field|
-            %th
-              %a{ :href => "/?sort=#{field.robotize}&search=#{params[:search]}" }= field
-              - if @sort[0] == field.robotize
-                %span= "\u2191"
-        - @items.each do |item|
-          = item_table_row(item)
-
-    - if ENV['ADMIN_PASSWORD']
-      #editing-bar
-        %span== #{@items.count} items.
-        %a{ :href => '/export/' } Export all items to csv
-        - if session['editing_enabled']
-          %a{ :href => '/logout' } Disable Editing
-          %a.import{ :href => '' } Import csv
-          %form.no-ajax{ :action => '/import/', :method => 'post', :enctype => 'multipart/form-data'}
-            %input{ :type => 'file', :name => 'file' }
-            %input{ :type => 'submit', :value => 'Import' }
-        - else
-          Editing is disabled.
-          %a.login{ :href => '' } Enable now?
-          %form.no-ajax{ :action => '/login', :method => 'post' }
-            %input{ :type => 'password', :name => 'password', :placeholder => 'Password' }
-            %input{ :type => 'submit', :value => 'Enable' }
-        %form.search.no-ajax{ :action => '/', :method => 'get' }
-          %input{ :type => 'text', :name => 'search', :placeholder => 'Search', :value => params[:search] }
-      .toggle-controls
-        %a{ :href => '' } Hide Controls
-
-    .footer
-      Created by
-      %a{ :href => 'http://www.gordondiggs.com/', :target => '_blank' } Gordon Diggs
-      in 2011.
-
-    %a{ :href => "https://github.com/GordonDiggs/cataloguais" }
-      %img{ :style => "position: absolute; top: 0; right: 0; border: 0;", :src=> "https://a248.e.akamai.net/assets.github.com/img/4c7dc970b89fd04b81c8e221ba88ff99a06c6b61/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67", :alt => "Fork me on GitHub" }
+- if ENV['ADMIN_PASSWORD']
+  #editing-bar
+    %span== #{@items.count} items.
+    %a{ :href => '/graphs/' } stats
+    %a{ :href => '/export/' } export all items to csv
+    - if session['editing_enabled']
+      %a{ :href => '/logout' } disable editing
+      %a.import{ :href => '' } import csv
+      %form.no-ajax{ :action => '/import/', :method => 'post', :enctype => 'multipart/form-data'}
+        %input{ :type => 'file', :name => 'file' }
+        %input{ :type => 'submit', :value => 'Import' }
+    - else
+      editing is disabled.
+      %a.login{ :href => '' } enable now?
+      %form.no-ajax{ :action => '/login', :method => 'post' }
+        %input{ :type => 'password', :name => 'password', :placeholder => 'Password' }
+        %input{ :type => 'submit', :value => 'Enable' }
+    %form.search.no-ajax{ :action => '/', :method => 'get' }
+      %input{ :type => 'text', :name => 'search', :placeholder => 'Search', :value => params[:search] }
+  .toggle-controls
+    %a{ :href => '' } hide controls

@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/mattetti/googlecharts.git
+  revision: 5c6ea46152bdf8f969e168b3ed7185787bfac09d
+  specs:
+    googlecharts (1.6.8)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -61,6 +67,7 @@ PLATFORMS
 
 DEPENDENCIES
   bson_ext
+  googlecharts!
   haml
   json
   mongo_mapper

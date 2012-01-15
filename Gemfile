@@ -9,6 +9,7 @@ gem 'bson_ext'
 gem 'sinatra-config-file'
 gem 'json'
 gem 'tux'
+gem 'googlecharts', :git => 'git://github.com/mattetti/googlecharts.git'
 
 group :test do
   gem 'rack-test'
