@@ -7,7 +7,7 @@ $(document).ready(function() {
 
   // bind to form submission (adding/updating an item)
   // show the message and add the row to the bottom of the table
-  $('form:not(.no-ajax)').live('submit', function() {
+  $('form.ajax').live('submit', function() {
     var $form = $(this);
 
     $.ajax({

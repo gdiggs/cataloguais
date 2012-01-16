@@ -8,7 +8,7 @@
       %a.delete{ :href => 'javascript:', :rel => "/delete/#{@item.id}", :title => 'Delete' } d
 
 %tr.edit{ 'data-id' => @item.id }
-  %form{ :action => "/update/#{@item.id}", :method => 'post' }
+  %form.ajax{ :action => "/update/#{@item.id}", :method => 'post' }
     - settings.fields.each do |field|
       %td
         %input{ :type => 'text', :name => "item[#{field.robotize}]", :placeholder => field, :value => @item.send(field.robotize), :style => "width:#{settings.item_width}px;" }
