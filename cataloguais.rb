@@ -159,7 +159,7 @@ end
 # calculate the occurrences and set the graph urls
 def set_graph_urls
   get_occurrences.each do |label, data_set|
-    img_src = Gchart.pie(:labels => data_set.keys, :data => data_set.values, :size => '600x400', :bg => '2f2f2f')
+    img_src = Gchart.pie(:labels => data_set.keys, :data => data_set.values, :size => '600x400', :bg => '2f2f2f', :bar_colors => '336688')
 
     # Request length must be less than 2048, otherwise it will fail
     if img_src.length < 2048
