@@ -34,14 +34,14 @@ end
 configure do
   config_file 'settings.yml'
   MongoMapper.database = settings.database unless @db_name
-  # get the fields into a global array
-  set :field_count, settings.fields.count
-
   # set the input width based on the number of fields
-  set :item_width, 840 / settings.field_count
+  set :item_width, 840 / settings.fields.count
   
   # robotize the sort order
   set :sort_order, settings.sort_order.collect {|sort| sort.robotize}
+
+  # initialize the graph urls on startup
+  set :graph_urls, {}
 end
 
 before do
@@ -68,12 +68,12 @@ get '/' do
   haml :index
 end
 
-get '/export/' do
+get '/export' do
   headers "Content-Disposition" => "attachment;filename=collection_#{Time.now.strftime("%y%m%d%H%M%S")}.csv", "Content-Type" => "application/octet-stream"
   Item.export
 end
 
-post '/new/' do
+post '/new' do
   item = Item.create(params[:item])
   { :status => 'success', :message => 'Item successfully added.', :item_markup => item_table_row(item) }.to_json
 end
@@ -89,7 +89,7 @@ delete '/delete/:id' do
   {:status => 'success', :message => 'Item successfully deleted.'}.to_json
 end
 
-post '/import/' do
+post '/import' do
   data = CSV.parse(params[:file][:tempfile].read)
   headers = data.shift
 
@@ -117,11 +117,13 @@ get '/logout' do
   redirect '/'
 end
 
-get '/graphs/' do
-  get_occurrences
-  get_graph_urls
+get '/graphs' do
+  set_graph_urls if settings.graph_urls.empty?
   haml :graphs
 end
+
+# catch trailing spaces from https://gist.github.com/867165
+get %r{(.+)/$} do |r| redirect r; end;
 
 # render the row of the table for a given partial
 def item_table_row(item)
@@ -131,51 +133,47 @@ end
 
 # Get the occurrences of values for each field on Item
 def get_occurrences
-  @occurrences = {}
-
-  settings.fields.each { |field| @occurrences[field] = {} }
+  occurrences = {}
 
   settings.fields.each do |field|
+    occurrences[field] = {}
+
     Item.all.each do |item|
       value = item.send(field.robotize)
-      if @occurrences[field][value]
-        @occurrences[field][value] += 1
+      if occurrences[field][value]
+        occurrences[field][value] += 1
       else
-        @occurrences[field][value] = 1
+        occurrences[field][value] = 1
       end
     end
 
-    others = 0
-    @occurrences[field].each do |key, value|
-      if value == 1
-        @occurrences[field].delete(key)
-        others += 1
-      end
+    if (others = occurrences[field].select{|k,v| v==1}.size) > 1
+      occurrences[field].delete_if{|k,v| v==1}
+      occurrences[field]["Other"] = others
     end
-    # can't create new keys in a hash while iterating through it, so we have to do it after the loop
-    @occurrences[field]["Other"] = others unless others == 0
   end
+
+  occurrences
 end
 
-# Get the graph urls, given the occurrences already been set
-def get_graph_urls
-  @graph_urls = {}
-  @occurrences.each do |label, data_set|
+# calculate the occurrences and set the graph urls
+def set_graph_urls
+  get_occurrences.each do |label, data_set|
     img_src = Gchart.pie(:labels => data_set.keys, :data => data_set.values, :size => '600x400', :bg => '2f2f2f')
 
     # Request length must be less than 2048, otherwise it will fail
     if img_src.length < 2048
-      @graph_urls[label] = img_src
+      settings.graph_urls[label] = img_src
     else
       warn "Request length for '#{label}' graph is too long. Skipping."
     end
   end
 end
 
-
 # The Item class holds the data for each catalog entry
 class Item
   include MongoMapper::Document
+  after_save { set_graph_urls }
 
   # set up the schema for the item
   settings.fields.each do |field|
@@ -201,6 +199,7 @@ class Item
 
   def to_s
     Item.fields.collect{ |f| self.send(f) }.join(",")
-  end    
-  
+  end
+
 end
+

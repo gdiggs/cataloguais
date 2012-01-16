@@ -1,7 +1,7 @@
 .content
   - if session['editing_enabled']
     #add-new
-      %form{ :action => '/new/', :method => 'post' }
+      %form{ :action => '/new', :method => 'post' }
         - settings.fields.each do |field|
           %input{ :type => 'text', :name => "item[#{field.robotize}]", :placeholder => field, :style => "width:#{settings.item_width}px;" }
         %input{ :type => 'submit', :value => 'Add' }
@@ -19,12 +19,12 @@
 - if ENV['ADMIN_PASSWORD']
   #editing-bar
     %span== #{@items.count} items.
-    %a{ :href => '/graphs/' } stats
-    %a{ :href => '/export/' } export all items to csv
+    %a{ :href => '/graphs' } stats
+    %a{ :href => '/export' } export all items to csv
     - if session['editing_enabled']
       %a{ :href => '/logout' } disable editing
       %a.import{ :href => '' } import csv
-      %form.no-ajax{ :action => '/import/', :method => 'post', :enctype => 'multipart/form-data'}
+      %form.no-ajax{ :action => '/import', :method => 'post', :enctype => 'multipart/form-data'}
         %input{ :type => 'file', :name => 'file' }
         %input{ :type => 'submit', :value => 'Import' }
     - else

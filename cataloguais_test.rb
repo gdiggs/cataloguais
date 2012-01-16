@@ -17,10 +17,6 @@ class CataloguaisTest < Test::Unit::TestCase
   Item.all.each { |item| item.destroy }
 
   context "settings" do
-    should "have the right number of fields" do
-      assert_equal settings.field_count, settings.fields.count
-    end
-
     should "have item width" do
       assert_not_nil settings.item_width
     end
