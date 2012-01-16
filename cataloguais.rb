@@ -135,8 +135,8 @@ def get_occurrences
 
   settings.fields.each { |field| @occurrences[field] = {} }
 
-  Item.all.each do |item|
-    settings.fields.each do |field|
+  settings.fields.each do |field|
+    Item.all.each do |item|
       value = item.send(field.robotize)
       if @occurrences[field][value]
         @occurrences[field][value] += 1
@@ -144,6 +144,16 @@ def get_occurrences
         @occurrences[field][value] = 1
       end
     end
+
+    others = 0
+    @occurrences[field].each do |key, value|
+      if value == 1
+        @occurrences[field].delete(key)
+        others += 1
+      end
+    end
+    # can't create new keys in a hash while iterating through it, so we have to do it after the loop
+    @occurrences[field]["Other"] = others unless others == 0
   end
 end
 
