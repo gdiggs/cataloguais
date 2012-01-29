@@ -107,6 +107,10 @@ get '/stylesheet.css' do
   sass :stylesheet
 end
 
+get '/print.css' do
+  sass :print
+end
+
 post '/login' do
   session['editing_enabled'] = true if ENV['ADMIN_PASSWORD'] && params[:password] == ENV['ADMIN_PASSWORD']
   redirect '/'

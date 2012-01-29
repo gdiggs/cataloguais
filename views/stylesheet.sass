@@ -11,6 +11,12 @@ h1
     :color #7ac
     :text-decoration none
 
+.github-link img
+  :position absolute
+  :top 0
+  :right 0
+  :border 0
+
 a
   :color #ccc
   &:hover
@@ -90,11 +96,14 @@ form
   a, span
     :padding-right 10px
 
-.footer
+.footer, .print-footer
   :font-size 12px
   :padding 20px 0 35px 0
   a
     :color #888
+
+.print-footer
+  :display none
 
 .toggle-controls
   :position fixed
