@@ -58,6 +58,10 @@ before /(new|update|delete|import)/ do
   end
 end
 
+after /(new|update|delete|import)/ do
+  set_graph_urls
+end
+
 get '/' do
   @sort = if params[:sort]
             [params[:sort]] + (settings.sort_order - [params[:sort]])
@@ -90,6 +94,8 @@ delete '/delete/:id' do
 end
 
 post '/import' do
+  redirect('/?message=You must upload a file') if !params[:file]
+
   data = CSV.parse(params[:file][:tempfile].read)
   headers = data.shift
 
@@ -100,7 +106,8 @@ post '/import' do
     end
     item.save
   end
-  redirect '/'
+
+  redirect "/?message=Imported #{data.size} items"
 end
 
 get '/stylesheet.css' do
@@ -169,7 +176,7 @@ def set_graph_urls
     if img_src.length < 2048
       settings.graph_urls[label] = img_src
     else
-      warn "Request length for '#{label}' graph is too long. Skipping."
+      warn "!!! Request length for '#{label}' graph is too long. Skipping."
     end
   end
 end
@@ -177,7 +184,6 @@ end
 # The Item class holds the data for each catalog entry
 class Item
   include MongoMapper::Document
-  after_save { set_graph_urls }
 
   # set up the schema for the item
   settings.fields.each do |field|

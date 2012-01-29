@@ -23,7 +23,7 @@
     %h1
       %a{ :href => '/' } Cataloguais
 
-    .message
+    .message{ :style=> ('display:block' if params[:message]) }= params[:message]
 
     = yield
 
