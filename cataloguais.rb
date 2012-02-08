@@ -223,5 +223,9 @@ class Item
     Item.fields.collect{ |f| self.send(f) }
   end
 
+  def to_s
+    self.to_a.join(",")
+  end
+
 end
 
