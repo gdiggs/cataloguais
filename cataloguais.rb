@@ -68,7 +68,9 @@ get '/' do
           else
             settings.sort_order
           end
-  @items = Item.all(:order => @sort).select { |item| item.to_s.downcase.include? params[:search].to_s.downcase }
+  @direction = params[:direction] || :asc
+  @direction = @direction.to_sym if @direction
+  @items = Item.search_and_sort(@sort, @direction, params[:search])
   haml :index
 end
 
@@ -142,6 +144,10 @@ def item_table_row(item)
   haml :_item, :layout => false
 end
 
+def opposite_direction
+  @direction == :asc ? :desc : :asc
+end
+
 # Get the occurrences of values for each field on Item
 def get_occurrences
   occurrences = {}
@@ -207,6 +213,11 @@ class Item
   # Item.fields returns an array of field names
   def self.fields
     self.keys.keys[1..-1]
+  end
+
+  def self.search_and_sort(sort, direction = :asc, search = '')
+    sort = sort.collect { |s| s.to_sym.send(direction) }
+    Item.all(:order => sort).select { |item| item.to_s.downcase.include? search.to_s.downcase }
   end
 
   def to_s

@@ -10,9 +10,10 @@
     %tr
       - settings.fields.each do |field|
         %th
-          %a{ :href => "/?sort=#{field.robotize}&search=#{params[:search]}" }= field
+          - next_direction = (@sort[0] == field.robotize) ? opposite_direction : :asc
+          %a{ :href => "/?sort=#{field.robotize}&direction=#{next_direction}&search=#{params[:search]}" }= field
           - if @sort[0] == field.robotize
-            %span= "\u2191"
+            %span= (@direction == :asc) ? "\u2191" : "\u2193"
     - @items.each do |item|
       = item_table_row(item)
 
