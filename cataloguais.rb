@@ -76,7 +76,12 @@ end
 
 get '/export' do
   headers "Content-Disposition" => "attachment;filename=collection_#{Time.now.strftime("%y%m%d%H%M%S")}.csv", "Content-Type" => "application/octet-stream"
-  Item.export
+  CSV.generate do |file|
+    file << Item.fields
+    Item.all.each do |item|
+      file << item.to_a
+    end
+  end
 end
 
 post '/new' do
@@ -204,12 +209,6 @@ class Item
     alias :"field#{i}" :"#{field.robotize}"
   end
 
-  # Export CSV data as a string
-  # First row is headers, with each Item having a row after
-  def self.export
-    (self.fields.join(",") + "\n" + Item.all.join("\n")).gsub(/"/, '')
-  end
-
   # Item.fields returns an array of field names
   def self.fields
     self.keys.keys[1..-1]
@@ -220,8 +219,8 @@ class Item
     Item.all(:order => sort).select { |item| item.to_s.downcase.include? search.to_s.downcase }
   end
 
-  def to_s
-    Item.fields.collect{ |f| self.send(f) }.join(",")
+  def to_a
+    Item.fields.collect{ |f| self.send(f) }
   end
 
 end
