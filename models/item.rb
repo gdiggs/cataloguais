@@ -4,6 +4,8 @@ class Item
 
   # set up the schema for the item
   property :id, Serial
+  property :created_at, DateTime
+  property :updated_at, DateTime
   settings.fields.each do |field|
     property :"#{field.robotize}", String
   end
