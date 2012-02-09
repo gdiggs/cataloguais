@@ -7,33 +7,13 @@ require 'csv'
 
 Bundler.require
 require "sinatra/config_file"
+require_relative "extensions/string"
 
 enable :sessions
 
-class Object::String
-  # robotize turns a string into something that is a valid hash form,
-  # all lower case and with an _ instead of non-word characters
-  def robotize
-    return self.downcase.gsub(/[^a-zA-z0-9]/, '_')
-  end
-end
-
-configure :production do
-  uri = URI.parse(ENV['MONGOHQ_URL'])
-  conn = Mongo::Connection.from_uri(ENV['MONGOHQ_URL'])
-  @db_name = uri.path.gsub(/^\//, '')
-  db = conn.db(@db_name)
-  MongoMapper.connection = conn
-  MongoMapper.database = @db_name
-end
-
-configure :development do
-  ENV['ADMIN_PASSWORD'] = 'test'
-end
-
 configure do
   config_file 'settings.yml'
-  MongoMapper.database = settings.database unless @db_name
+
   # set the input width based on the number of fields
   set :item_width, 840 / settings.fields.count
   
@@ -42,6 +22,25 @@ configure do
 
   # initialize the graph urls on startup
   set :graph_urls, {}
+
+  # require the model(s) before setting up the database
+  require_relative "models/item"
+  DataMapper.finalize
+end
+
+configure :production do
+  DataMapper::Logger.new($stdout, :info)
+end
+
+configure :development do
+  ENV['ADMIN_PASSWORD'] = 'test'
+  ENV['DATABASE_URL'] = 'postgres://localhost/cataloguais'
+  DataMapper::Logger.new($stdout, :debug)
+end
+
+configure do
+  DataMapper.setup(:default, ENV['DATABASE_URL'])
+  DataMapper.auto_upgrade!
 end
 
 before do
@@ -52,7 +51,7 @@ before do
 end
 
 before /(new|update|delete|import)/ do
-  unless session['editing_enabled']
+  if !session['editing_enabled']
     data = { :status => 'error', :message => 'Hey, Mike! Editing must be enabled to do that!' }.to_json
     halt data
   end
@@ -90,13 +89,14 @@ post '/new' do
 end
 
 post '/update/:id' do
-  item = Item.find(params[:id])
-  item.update_attributes(params[:item])
+  item = Item.first(:id => params[:id])
+  item.attributes = params[:item]
+  item.save!
   { :status => 'success', :message => 'Item successfully updated.', :item_markup => item_table_row(item) }.to_json
 end
 
 delete '/delete/:id' do
-  Item.find(params[:id]).destroy
+  Item.first(:id => params[:id]).destroy
   {:status => 'success', :message => 'Item successfully deleted.'}.to_json
 end
 
@@ -106,12 +106,14 @@ post '/import' do
   data = CSV.parse(params[:file][:tempfile].read)
   headers = data.shift
 
-  data.each do |row|
-    item = Item.new
-    headers.each_with_index do |attr, i|
-      item.write_attribute(attr.robotize, row[i])
+  Item.transaction do
+    data.each do |row|
+      item = Item.new
+      headers.each_with_index do |attr, i|
+        item.send("#{attr.robotize}=", row[i])
+      end
+      item.save
     end
-    item.save
   end
 
   redirect "/?message=Imported #{data.size} items"
@@ -194,38 +196,5 @@ def set_graph_urls
   end
 end
 
-# The Item class holds the data for each catalog entry
-class Item
-  include MongoMapper::Document
 
-  # set up the schema for the item
-  settings.fields.each do |field|
-    key :"#{field.robotize}", String
-  end
-
-  # create aliases, so fields can be accessed
-  # either as `item.title` or `item.field0`
-  settings.fields.each_with_index do |field, i|
-    alias :"field#{i}" :"#{field.robotize}"
-  end
-
-  # Item.fields returns an array of field names
-  def self.fields
-    self.keys.keys[1..-1]
-  end
-
-  def self.search_and_sort(sort, direction = :asc, search = '')
-    sort = sort.collect { |s| s.to_sym.send(direction) }
-    Item.all(:order => sort).select { |item| item.to_s.downcase.include? search.to_s.downcase }
-  end
-
-  def to_a
-    Item.fields.collect{ |f| self.send(f) }
-  end
-
-  def to_s
-    self.to_a.join(",")
-  end
-
-end
 
