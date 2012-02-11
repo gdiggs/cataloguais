@@ -83,6 +83,13 @@ get '/export' do
   end
 end
 
+get '/random' do
+  @items = [Item.get_random]
+  @sort = settings.sort_order
+  @direction = :asc
+  haml :index
+end
+
 post '/new' do
   item = Item.create(params[:item])
   { :status => 'success', :message => 'Item successfully added.', :item_markup => item_table_row(item) }.to_json

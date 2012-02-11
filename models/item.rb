@@ -21,6 +21,11 @@ class Item
     self.properties.collect{ |p| p.name }[1..-1]
   end
 
+  def self.get_random
+    id = Item.all(:fields => [:id]).to_a.map{|i| i.id}.shuffle[0]
+    Item.first(:id => id)
+  end
+
   def self.search_and_sort(sort, direction = :asc, search = '')
     sort = sort.collect { |s| s.to_sym.send(direction) }
     Item.all(:order => sort).select { |item| item.to_s.downcase.include? search.to_s.downcase }
