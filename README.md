@@ -6,7 +6,7 @@
 ### Installation
 You must have [Postgres](http://www.postgresql.org/) installed prior to running Cataloguais. On OS X with homebrew, you can just do `brew install postgres`.
 
-Once you have Mongo running and have cloned the app to your local directory, you can run:
+Once you have Postgres running and have cloned the app to your local directory, you can run:
 
 ```
 bundle install
@@ -33,7 +33,7 @@ If you have a feature, or want to fix a bug, I invite you to do so! Please make 
 ### Installation
 On doit installer [Postgres](http://www.postgresql.org/) avant de utiliser Cataloguais. Avec OS X et homebrew, on peut faire `brew install postgres`.
 
-Après avoir installé Mongo et avoir cloné l'application à votre système, on peut faire:
+Après avoir installé Postgres et avoir cloné l'application à votre système, on peut faire:
 
 ```
 bundle install
