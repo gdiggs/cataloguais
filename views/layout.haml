@@ -35,7 +35,8 @@
     .print-footer
       - if @items
         == #{@items.count} items.
-      == Printed at #{request.url}
+      == Printed on #{Time.now.strftime("%a %b %-d %Y at %H:%M")} at #{request.url}
+      %br
       Fork me on Github at https://github.com/GordonDiggs/cataloguais
 
     %a.github-link{ :href => "https://github.com/GordonDiggs/cataloguais" }
