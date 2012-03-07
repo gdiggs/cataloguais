@@ -57,8 +57,10 @@ before /(new|update|delete|import)/ do
   end
 end
 
+# empty graph urls so they will be recreated the next time
+# the graphs page is visited
 after /(new|update|delete|import)/ do
-  set_graph_urls
+  set :graph_urls, {}
 end
 
 get '/' do
