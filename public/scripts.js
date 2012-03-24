@@ -76,4 +76,20 @@ $(document).ready(function() {
     return false;
   });
 
+  // select random data row, highlight it and scroll the window
+  // to it
+  $('a.random').live('click', function() {
+    $('tr.hover').removeClass('hover');
+    var rows = $('tr[data-id]:not(.edit)'),
+        index = Math.floor(Math.random() * rows.length),
+        $row = $(rows[index]);
+
+    $row.addClass('hover');
+    $('html, body').animate( {
+      scrollTop: $row.offset().top
+    }, 800);
+
+    return false;
+  });
+
 });

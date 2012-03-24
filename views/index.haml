@@ -22,6 +22,7 @@
     %span== #{@items.count} items.
     %a{ :href => '/graphs' } stats
     %a{ :href => '/export' } export all items to csv
+    %a.random{ :href => 'javascript:' } random
     - if session['editing_enabled']
       %a{ :href => '/logout' } disable editing
       %a.import{ :href => '' } import csv
