@@ -7,7 +7,7 @@ class Item
   property :created_at, DateTime
   property :updated_at, DateTime
   settings.fields.each do |field|
-    property :"#{field.robotize}", Text
+    property :"#{field.robotize}", Text, :lazy => false
   end
 
   # create aliases, so fields can be accessed
