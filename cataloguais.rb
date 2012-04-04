@@ -32,6 +32,11 @@ configure :production do
   DataMapper::Logger.new($stdout, :info)
 end
 
+configure :test do
+  ENV['DATABASE_URL'] = 'postgres://localhost/cataloguais_test'
+  DataMapper::Logger.new($stdout, :error)
+end
+
 configure :development do
   ENV['ADMIN_PASSWORD'] = 'test'
   ENV['DATABASE_URL'] = 'postgres://localhost/cataloguais'
@@ -45,7 +50,7 @@ end
 
 before do
   if ENV['ADMIN_PASSWORD'].nil?
-    warn "!!! Admin password not set - editing will be enabled by default"
+    warn "!!! Admin password not set - editing will be enabled by default" unless ENV['RACK_ENV'] == 'test'
     session['editing_enabled'] = true
   end
 end

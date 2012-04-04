@@ -22,7 +22,7 @@ You should also add an `ENV['ADMIN_PASSWORD']` variable if you want to allow edi
 The fields for a row are specified in `settings.yml`. You can specify field names in human terms safely (for instance, a field name of "Album Title" will translate to the attribute name of "album_title". You can also refer to fields by their number (so `item.field0` will be equivalent to `item.title`). If you want to re-order fields in the table, you can just change the order in the settings file.
 
 ### Testing
-You can run the tests by running `ruby ./cataloguais_test.rb`. Make sure Postgres is running.
+You can run the tests by running `turn ./cataloguais_test.rb`. Make sure Postgres is running.
 
 ### Submitting Patches
 If you have a feature, or want to fix a bug, I invite you to do so! Please make sure all code in Pull Requests is documented and tested or it may not be accepted immediately.
@@ -49,7 +49,7 @@ On doit aussi créer un `ENV['ADMIN_PASSWORD']` variable si on veut permettre l'
 Les fields d'une rangée sont données en `settings.yml`. On peut donner des noms pour les attributs dans la langue de l'homme (par exemple, un nom de "Titre d'album" va etre un attribut de "titre_d_album". On peut aussi accéder aux attributs par leur nombre (`item.field0` va etre equivalent à `item.titre`). Si on veut réorganiser les attributs, on peut juste la faire dans le fichier des options.
 
 ### Testing
-On peut executer les tests avec `ruby ./cataloguais_test.rb`. Postgres doit etre commencé.
+On peut executer les tests avec `turn ./cataloguais_test.rb`. Postgres doit etre commencé.
 
 ### Soumettre du code
 Si on a du code pour ce projet, on peut soumettre un Pull Request. SVP, vous assurez que tous le code dans votre Pull Request est doccumenté et évalué avant de le soumettre.

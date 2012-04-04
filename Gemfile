@@ -15,4 +15,5 @@ gem 'googlecharts', :git => 'git://github.com/mattetti/googlecharts.git'
 group :test do
   gem 'rack-test'
   gem 'shoulda-context'
+  gem 'turn'
 end

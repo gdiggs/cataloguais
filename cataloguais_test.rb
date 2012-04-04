@@ -1,9 +1,14 @@
+ENV['RACK_ENV'] = 'test'
+
 require './cataloguais'
 require 'shoulda-context'
 require 'test/unit'
 require 'rack/test'
 
-set :environment, :test
+Turn.config do |c|
+ c.format = :dotted
+ c.trace = true
+end
 
 class CataloguaisTest < Test::Unit::TestCase
   include Rack::Test::Methods
@@ -13,7 +18,6 @@ class CataloguaisTest < Test::Unit::TestCase
   end
 
   # set up the test db
-  MongoMapper.database = "cataloguais_test"
   Item.all.each { |item| item.destroy }
 
   context "settings" do
@@ -33,9 +37,9 @@ class CataloguaisTest < Test::Unit::TestCase
       end
     end
 
-    context "POST /new/" do
+    context "POST /new" do
       setup do
-        post '/new/', {:item => { :title => "My favorite album" }}
+        post '/new', {:item => { :title => "My favorite album" }}
         @response = JSON.parse(last_response.body)
       end
 
@@ -90,14 +94,14 @@ class CataloguaisTest < Test::Unit::TestCase
       end
 
       should "remove item" do
-        assert_nil Item.find_by_id(@item_id)
+        assert_nil Item.get(@item_id)
       end
     end
   end
 
   context "Item" do
     setup do
-      @item = Item.new()
+      @item = Item.new
     end
 
     should "have the right number of fields and methods" do
@@ -109,7 +113,7 @@ class CataloguaisTest < Test::Unit::TestCase
 
     context ".fields" do
       should "return the correct fields" do
-        assert_equal settings.fields.collect{ |field| field.robotize }, Item.fields
+        assert_equal [:created_at, :updated_at] | settings.fields.collect{ |field| field.robotize.to_sym }, Item.fields
       end
     end
   end
