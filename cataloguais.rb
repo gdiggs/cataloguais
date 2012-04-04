@@ -171,15 +171,15 @@ def get_occurrences
   settings.fields.each do |field|
     occurrences[field] = {}
 
-    Item.all.each do |item|
-      value = item.send(field.robotize)
-      if occurrences[field][value]
-        occurrences[field][value] += 1
-      else
-        occurrences[field][value] = 1
-      end
+    # use SQL grouping for fast calculation
+    items = DataMapper.repository.adapter.select("SELECT #{field.robotize} as \"col\", COUNT(*) as \"times\" FROM items GROUP BY #{field.robotize} ORDER BY \"times\" desc")
+
+    # copy the items into the occurrences (since they are an array of structs after selection)
+    items.each do |item|
+      occurrences[field][item[:col]] = item[:times]
     end
 
+    # group all the 1s together
     if (others = occurrences[field].select{|k,v| v==1}.size) > 1
       occurrences[field].delete_if{|k,v| v==1}
       occurrences[field]["Other"] = others
