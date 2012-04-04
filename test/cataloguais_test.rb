@@ -1,14 +1,4 @@
-ENV['RACK_ENV'] = 'test'
-
-require './cataloguais'
-require 'shoulda-context'
-require 'test/unit'
-require 'rack/test'
-
-Turn.config do |c|
- c.format = :dotted
- c.trace = true
-end
+require_relative './test_helper'
 
 class CataloguaisTest < Test::Unit::TestCase
   include Rack::Test::Methods
