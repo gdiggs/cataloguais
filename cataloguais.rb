@@ -117,20 +117,18 @@ end
 post '/import' do
   redirect('/?message=You must upload a file') if !params[:file]
 
-  data = CSV.parse(params[:file][:tempfile].read)
-  headers = data.shift
+  # construct an array of hashes from the data
+  # from http://snippets.dzone.com/posts/show/3899
+  csv_data = CSV.read params[:file][:tempfile]
+  headers = csv_data.shift.map {|i| i.to_s }
+  string_data = csv_data.map {|row| row.map {|cell| cell.to_s.force_encoding('utf-8') } }
+  array_of_hashes = string_data.map {|row| Hash[*headers.zip(row).flatten] }
 
   Item.transaction do
-    data.each do |row|
-      item = Item.new
-      headers.each_with_index do |attr, i|
-        item.send("#{attr.robotize}=", row[i])
-      end
-      item.save
-    end
+    array_of_hashes.each { |attrs| Item.create(attrs) }
   end
 
-  redirect "/?message=Imported #{data.size} items"
+  redirect "/?message=Imported #{array_of_hashes.count} items"
 end
 
 get '/stylesheet.css' do
