@@ -27,8 +27,14 @@ class Item
   end
 
   def self.search_and_sort(sort, direction = :asc, search = '')
-    sort = sort.collect { |s| s.to_sym.send(direction) }
-    Item.all(:order => sort).select { |item| item.to_s.downcase.include? search.to_s.downcase }
+    settings.numeric_sort_fields.each do |field|
+      if i = sort.index(field)
+        sort[i] = "to_number(#{field}, '9999999.99')"
+      end
+    end
+
+    sort_options = sort.join(" #{direction}, ")
+    Item.find_by_sql("SELECT * FROM items ORDER BY #{sort_options} #{direction}").select { |item| item.to_s.downcase.include? search.to_s.downcase }
   end
 
   def to_a

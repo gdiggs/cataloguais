@@ -26,6 +26,8 @@ GEM
       addressable (~> 2.1)
     dm-aggregates (1.0.2)
       dm-core (~> 1.0.2)
+    dm-ar-finders (1.0.2)
+      dm-core (~> 1.0.2)
     dm-constraints (1.0.2)
       dm-core (~> 1.0.2)
       dm-migrations (~> 1.0.2)
@@ -103,6 +105,7 @@ PLATFORMS
 DEPENDENCIES
   bson_ext
   data_mapper
+  dm-ar-finders
   dm-postgres-adapter
   googlecharts!
   haml

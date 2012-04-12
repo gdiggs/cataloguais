@@ -21,6 +21,8 @@ You should also add an `ENV['ADMIN_PASSWORD']` variable if you want to allow edi
 #### Fields
 The fields for a row are specified in `settings.yml`. You can specify field names in human terms safely (for instance, a field name of "Album Title" will translate to the attribute name of "album_title". You can also refer to fields by their number (so `item.field0` will be equivalent to `item.title`). If you want to re-order fields in the table, you can just change the order in the settings file.
 
+The default order for sorting is specified in the settings file as well. The `numeric_sort_fields` array is for fields that should be sorted numerically (by default postgres will sort them alphabetically).
+
 ### Testing
 You can run the tests by running `turn ./test/cataloguais_test.rb`. Make sure Postgres is running. You can also measure the performance of several parts of the app with different volumes of items by running `turn ./test/cataloguais_stress_test.rb`.
 
@@ -47,6 +49,8 @@ On doit aussi créer un `ENV['ADMIN_PASSWORD']` variable si on veut permettre l'
 
 ### Fields
 Les fields d'une rangée sont données en `settings.yml`. On peut donner des noms pour les attributs dans la langue de l'homme (par exemple, un nom de "Titre d'album" va etre un attribut de "titre_d_album". On peut aussi accéder aux attributs par leur nombre (`item.field0` va etre equivalent à `item.titre`). Si on veut réorganiser les attributs, on peut juste la faire dans le fichier des options.
+
+L'ordre par défaut pour tri est aussi specifié en `settings.yml`. On peut spécifier les fields qui doivent être mis dans l'ordre numériquement dans `numeric_sort_fields`.
 
 ### Testing
 On peut executer les tests avec `turn ./test/cataloguais_test.rb`. Postgres doit etre commencé. On peut aussi mesurer la performance de l'applications avec des nombres d'items differents avec `turn ./test/cataloguais_stress_test.rb`.

@@ -76,7 +76,7 @@ get '/' do
           end
   @direction = params[:direction] || :asc
   @direction = @direction.to_sym if @direction
-  @items = Item.search_and_sort(@sort, @direction, params[:search])
+  @items = Item.search_and_sort(@sort.dup, @direction, params[:search])
   haml :index
 end
 

@@ -1,6 +1,7 @@
 # Field names for the db table, used in the UI table
 fields: ['Title', 'Artist', 'Year', 'Label', 'Format', 'Condition', 'Color', 'Price Paid']
 sort_order: ['artist', 'title', 'year', 'label', 'format']
+numeric_sort_fields: ['price_paid']
 
 # database options
 database: 'cataloguais'
