@@ -50,6 +50,12 @@ $(document).ready(function() {
 
     $('tr[data-id=' + id + ']').hide();
     $('tr[data-id=' + id + '].edit').show();
+
+    // move the edit row into view
+    $('html, body').animate( {
+      scrollTop: $('tr[data-id=' + id + '].edit').offset().top - 50
+    }, 100);
+
     return false;
   });
 
