@@ -17,7 +17,7 @@ $(document).ready(function() {
       dataType: 'json',
       success: function(response) {
         showMessage(response.message);
-        $(response.item_markup).appendTo('table');
+        $(response.item_markup).insertAfter('table tr:first');
         $form.find('input[type=text]').val('');
       }
     });
