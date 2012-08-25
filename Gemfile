@@ -13,6 +13,10 @@ gem 'json'
 gem 'tux'
 gem 'googlecharts', :git => 'git://github.com/mattetti/googlecharts.git'
 
+group :development do
+  gem 'shotgun'
+end
+
 group :test do
   gem 'rack-test'
   gem 'shoulda-context'

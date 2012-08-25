@@ -78,6 +78,8 @@ GEM
       rack-test (>= 0.5)
       ripl (>= 0.3.5)
     sass (3.1.7)
+    shotgun (0.9)
+      rack (>= 1.0)
     shoulda-context (1.0.0.beta1)
     sinatra (1.2.6)
       rack (~> 1.1)
@@ -112,6 +114,7 @@ DEPENDENCIES
   json
   rack-test
   sass
+  shotgun
   shoulda-context
   sinatra
   sinatra-config-file

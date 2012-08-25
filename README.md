@@ -10,7 +10,7 @@ Once you have Postgres running and have cloned the app to your local directory, 
 
 ```
 bundle install
-ruby ./cataloguais.rb
+./bin/cataloguais
 ```
 
 ### Configuration
@@ -39,7 +39,7 @@ Après avoir installé Postgres et avoir cloné l'application à votre système,
 
 ```
 bundle install
-ruby ./cataloguais.rb
+./bin/cataloguais
 ```
 
 ### Configuration
