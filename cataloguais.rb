@@ -14,6 +14,12 @@ enable :sessions
 configure do
   config_file 'settings.yml'
 
+  # require the model(s) before setting up the database
+  require_relative "models/item"
+  DataMapper.finalize
+
+  settings.fields << 'Created At'
+
   # set the input width based on the number of fields
   set :item_width, 840 / settings.fields.count
   
@@ -23,9 +29,6 @@ configure do
   # initialize the graph urls on startup
   set :graph_urls, {}
 
-  # require the model(s) before setting up the database
-  require_relative "models/item"
-  DataMapper.finalize
 end
 
 configure :production do

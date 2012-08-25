@@ -37,6 +37,10 @@ class Item
     Item.find_by_sql("SELECT * FROM items ORDER BY #{sort_options} #{direction}").select { |item| item.to_s.downcase.include? search.to_s.downcase }
   end
 
+  def created_at
+    self.attribute_get(:created_at).strftime("%m.%d.%Y")
+  end
+
   def to_a
     Item.fields.collect{ |f| self.send(f) }
   end

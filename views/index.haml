@@ -11,7 +11,7 @@
       - settings.fields.each do |field|
         %th
           - next_direction = (@sort[0] == field.robotize) ? opposite_direction : :asc
-          %a{ :href => "/?sort=#{field.robotize}&direction=#{next_direction}&search=#{params[:search]}" }= field
+          %a{ :href => "/?sort=#{field.robotize}&direction=#{next_direction}&search=#{params[:search]}" }= field.gsub(/Created At/, 'Added On')
           - if @sort[0] == field.robotize
             %span= (@direction == :asc) ? "\u2191" : "\u2193"
     - @items.each do |item|
