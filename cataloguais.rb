@@ -100,6 +100,14 @@ get '/random' do
   haml :index
 end
 
+get '/occurrences' do
+  if params['field']
+    { :occurrence => get_occurrence(params['field']) }.to_json
+  else
+    { :occurrence => get_occurrences }.to_json
+  end
+end
+
 post '/new' do
   item = Item.create(params[:item])
   { :status => 'success', :message => 'Item successfully added.', :item_markup => item_table_row(item) }.to_json
@@ -175,24 +183,41 @@ def get_occurrences
   occurrences = {}
 
   settings.fields.each do |field|
-    occurrences[field] = {}
-
-    # use SQL grouping for fast calculation
-    items = DataMapper.repository.adapter.select("SELECT #{field.robotize} as \"col\", COUNT(*) as \"times\" FROM items GROUP BY #{field.robotize} ORDER BY \"times\" desc")
-
-    # copy the items into the occurrences (since they are an array of structs after selection)
-    items.each do |item|
-      occurrences[field][item[:col]] = item[:times]
-    end
-
-    # group all the 1s together
-    if (others = occurrences[field].select{|k,v| v==1}.size) > 1
-      occurrences[field].delete_if{|k,v| v==1}
-      occurrences[field]["Other"] = others
-    end
+    occurrences[field] = get_occurrence(field, false)
   end
 
   occurrences
+end
+
+def get_occurrence(field, as_array = true)
+  data = as_array ? [[field.to_s, 'num']] : {}
+  others = 0
+
+  # use SQL grouping for fast calculation
+  items = DataMapper.repository.adapter.select("SELECT #{field.robotize} as \"col\", COUNT(*) as \"times\" FROM items GROUP BY #{field.robotize} ORDER BY \"times\" desc")
+
+  # copy the items into the occurrences (since they are an array of structs after selection)
+  items.each do |item|
+    if as_array
+      if item[:times] == 1
+        others += 1
+      else
+        data << [item[:col], item[:times]]
+      end
+    else
+      data[item[:col]] = item[:times]
+    end
+  end
+
+  # group all the 1s together
+  if !as_array && (others = data.select{|k,v| v==1}.size) > 1
+    data.delete_if{|k,v| v==1}
+    data["Other"] = others
+  end
+
+  data << ['Other', others] if as_array
+
+  data
 end
 
 # calculate the occurrences and set the graph urls

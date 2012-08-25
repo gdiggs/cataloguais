@@ -6,8 +6,13 @@
     %link{ :rel=>"stylesheet", :type=>"text/css", :href=>"/stylesheet.css"}
     %link{ :rel=>"stylesheet", :type=>"text/css", :href=>"/print.css", :media =>"print"}
     %link{ :rel=>"icon", :type=>"images/png", :href=>"/icon.png" }
-    %script{ :type => 'text/javascript', :src => "/jquery-1.6.3.min.js"}
+    %script{ :type => 'text/javascript', :src => "http://www.google.com/jsapi"}
     %script{ :type => 'text/javascript', :src => "/scripts.js"}
+    :javascript
+      google.load("jquery", "1.6.3");
+      google.load('visualization', '1.0', {'packages':['corechart']});
+      google.setOnLoadCallback(jqueryLoaded);
+
   - if ENV['GOOGLE_ANALYTICS_CODE']
     :javascript
       var _gaq = _gaq || [];

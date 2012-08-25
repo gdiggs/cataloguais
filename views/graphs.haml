@@ -1,5 +1,9 @@
 .content
   %h1 Stats for #{Item.count} items:
-  - settings.graph_urls.each do |label, source|
+  -# settings.graph_urls.each do |label, source|
     %h2= label
     %img{ :src => source }
+
+  - settings.fields.each do |field|
+    %h2= field
+    .chart{ 'data-field' => field.robotize }
