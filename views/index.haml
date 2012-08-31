@@ -3,6 +3,7 @@
     #add-new
       %form.ajax{ :action => '/new', :method => 'post' }
         - settings.fields.each do |field|
+          - next if field.robotize == 'created_at'
           %input{ :type => 'text', :name => "item[#{field.robotize}]", :placeholder => field, :style => "width:#{(0.8/settings.fields.count)*100}%" }
         %input{ :type => 'submit', :value => 'Add' }
 
