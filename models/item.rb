@@ -38,7 +38,7 @@ class Item
   end
 
   def created_at
-    self.attribute_get(:created_at).strftime("%m.%d.%Y")
+    self.attribute_get(:created_at).strftime("%m.%d.%Y") if self.attribute_get(:created_at)
   end
 
   def to_a
