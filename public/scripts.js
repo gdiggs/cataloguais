@@ -119,7 +119,18 @@ var jqueryLoaded = function() {
         $.getJSON('/occurrences', { field: $(elem).attr('data-field') }, function(response) {
           console.log("response for field:", $(elem).attr('data-field'), response);
           var data = google.visualization.arrayToDataTable(response.occurrence);
-          new google.visualization.PieChart(elem).draw(data, options);
+          var chart = new google.visualization.PieChart(elem)
+          chart.draw(data, options);
+
+          // add select listener to jump to search results from pie charts
+          google.visualization.events.addListener(chart, 'select', function() {
+            var selected = chart.getSelection()//,
+                label = data.getFormattedValue(selected[0].row, 0);
+
+            if(confirm("Go to results for '" + label + "'?")) {
+              window.location.href = '/?search=' + encodeURIComponent(label);
+            }
+          });
         });
 
       };
