@@ -1,5 +1,5 @@
 %tr{ 'data-id' => @item.id }
-  - settings.fields.each do |field|
+  - @fields.each do |field|
     %td{ :style => "max-width:#{settings.item_width + 100}px" }= @item.send(field.robotize)
   - if session[:editing_enabled]
     %td.edit
@@ -9,7 +9,7 @@
 
 %tr.edit{ 'data-id' => @item.id }
   %form.ajax{ :action => "/update/#{@item.id}", :method => 'post' }
-    - settings.fields.each do |field|
+    - @fields.each do |field|
       %td
         %input{ :type => 'text', :name => "item[#{field.robotize}]", :placeholder => field, :value => @item.send(field.robotize) }
     %td.edit

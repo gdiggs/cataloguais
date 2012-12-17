@@ -18,8 +18,6 @@ configure do
   require_relative "models/item"
   DataMapper.finalize
 
-  settings.fields << 'Created At'
-
   # set the input width based on the number of fields
   set :item_width, 840 / settings.fields.count
   
@@ -72,7 +70,9 @@ after /(new|update|delete|import)/ do
 end
 
 get '/' do
+  @fields = settings.fields + ['Added On']
   @sort = if params[:sort]
+            params[:sort].gsub!(/added_on/, 'created_at')
             [params[:sort]] + (settings.sort_order - [params[:sort]])
           else
             settings.sort_order
@@ -114,6 +114,7 @@ post '/new' do
 end
 
 post '/update/:id' do
+  params[:item].delete('added_on')
   item = Item.first(:id => params[:id])
   item.attributes = params[:item]
   item.save!
@@ -170,6 +171,7 @@ get %r{(.+)/$} do |r| redirect r; end;
 
 # render the row of the table for a given partial
 def item_table_row(item)
+  @fields ||= settings.fields + ['Added On']
   @item = item
   haml :_item, :layout => false
 end

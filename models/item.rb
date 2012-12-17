@@ -37,8 +37,8 @@ class Item
     Item.find_by_sql("SELECT * FROM items ORDER BY #{sort_options} #{direction}").select { |item| item.to_s.downcase.include? search.to_s.downcase }
   end
 
-  def created_at
-    self.attribute_get(:created_at).strftime("%m.%d.%Y") if self.attribute_get(:created_at)
+  def added_on
+    self.created_at.strftime("%m.%d.%Y") if self.created_at
   end
 
   def to_a

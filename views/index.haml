@@ -3,17 +3,16 @@
     #add-new
       %form.ajax{ :action => '/new', :method => 'post' }
         - settings.fields.each do |field|
-          - next if field.robotize == 'created_at'
           %input{ :type => 'text', :name => "item[#{field.robotize}]", :placeholder => field, :style => "width:#{(0.8/settings.fields.count)*100}%" }
         %input{ :type => 'submit', :value => 'Add' }
 
   %table{ :cellspacing => 0 }
     %tr
-      - settings.fields.each do |field|
+      - @fields.each do |field|
         %th
-          - next_direction = (@sort[0] == field.robotize) ? opposite_direction : :asc
-          %a{ :href => "/?sort=#{field.robotize}&direction=#{next_direction}&search=#{params[:search]}" }= field.gsub(/Created At/, 'Added On')
-          - if @sort[0] == field.robotize
+          - next_direction = (@sort[0].gsub(/created_at/, 'added_on') == field.robotize) ? opposite_direction : :asc
+          %a{ :href => "/?sort=#{field.robotize}&direction=#{next_direction}&search=#{params[:search]}" }= field
+          - if @sort[0].gsub(/created_at/, 'added_on') == field.robotize
             %span= (@direction == :asc) ? "\u2191" : "\u2193"
     - @items.each do |item|
       = item_table_row(item)
