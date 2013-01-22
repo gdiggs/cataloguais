@@ -16,6 +16,10 @@ class Item
     alias :"field#{i}" :"#{field.robotize}"
   end
 
+  def self.cache_key
+    Item.max(:updated_at).strftime("%s")
+  end
+
   # Item.fields returns an array of field names
   def self.fields
     self.properties.collect{ |p| p.name }[1..-1]

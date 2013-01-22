@@ -12,6 +12,8 @@ gem 'sinatra-config-file'
 gem 'json'
 gem 'tux'
 gem 'googlecharts', :git => 'git://github.com/mattetti/googlecharts.git'
+gem 'dalli'
+gem 'memcachier'
 
 group :development do
   gem 'shotgun'

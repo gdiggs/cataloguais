@@ -27,6 +27,8 @@ configure do
   # initialize the graph urls on startup
   set :graph_urls, {}
 
+  set :cache, Dalli::Client.new
+
 end
 
 configure :production do
@@ -79,7 +81,15 @@ get '/' do
           end
   @direction = params[:direction] || :asc
   @direction = @direction.to_sym if @direction
-  @items = Item.search_and_sort(@sort.dup, @direction, params[:search])
+
+  # try to fetch results from cache
+  cache_key = get_cache_key [@sort, @direction, params[:search]]
+  @items = settings.cache.get(cache_key)
+  if !@items
+    @items = Item.search_and_sort(@sort.dup, @direction, params[:search])
+    settings.cache.set(cache_key, @items)
+  end
+
   haml :index
 end
 
@@ -168,6 +178,10 @@ end
 
 # catch trailing spaces from https://gist.github.com/867165
 get %r{(.+)/$} do |r| redirect r; end;
+
+def get_cache_key(arr)
+  "#{Digest::MD5.hexdigest(arr.join('::'))}_#{Item.cache_key}"
+end
 
 # render the row of the table for a given partial
 def item_table_row(item)
