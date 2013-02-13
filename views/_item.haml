@@ -1,6 +1,6 @@
 %tr{ 'data-id' => @item.id }
   - @fields.each do |field|
-    %td{ :style => "max-width:#{settings.item_width + 100}px" }= @item.send(field.robotize)
+    %td{ :style => "max-width:#{settings.item_width + 100}px", 'data-title' => field }= @item.send(field.robotize)
   - if session[:editing_enabled]
     %td.edit
       %a.edit{ :href => 'javascript:', :title => 'Edit' } e

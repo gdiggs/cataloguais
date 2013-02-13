@@ -153,12 +153,8 @@ post '/import' do
   redirect "/?message=Imported #{array_of_hashes.count} items"
 end
 
-get '/stylesheet.css' do
-  sass :stylesheet
-end
-
-get '/print.css' do
-  sass :print
+get '/:stylesheet.css' do
+  sass params[:stylesheet].to_sym
 end
 
 post '/login' do

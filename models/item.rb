@@ -17,7 +17,7 @@ class Item
   end
 
   def self.cache_key
-    Item.max(:updated_at).strftime("%s")
+    Item.max(:updated_at).strftime("%s") if Item.any?
   end
 
   # Item.fields returns an array of field names
