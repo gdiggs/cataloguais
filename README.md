@@ -1,3 +1,5 @@
+[![Code Climate](https://codeclimate.com/github/GordonDiggs/cataloguais.png)](https://codeclimate.com/github/GordonDiggs/cataloguais)
+
 # Cataloguais - catalog anything
 
 ## English
