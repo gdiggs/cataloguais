@@ -1,4 +1,4 @@
-source :rubygems
+source 'https://rubygems.org'
 
 gem 'sinatra'
 gem 'thin'
@@ -20,7 +20,7 @@ group :development do
 end
 
 group :test do
+  gem 'test-unit'
   gem 'rack-test'
   gem 'shoulda-context'
-  gem 'turn'
 end
