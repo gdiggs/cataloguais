@@ -6,13 +6,13 @@ class Item
   property :id, Serial
   property :created_at, DateTime
   property :updated_at, DateTime
-  settings.fields.each do |field|
+  Sinatra::Application.settings.fields.each do |field|
     property :"#{field.robotize}", Text, :lazy => false
   end
 
   # create aliases, so fields can be accessed
   # either as `item.title` or `item.field0`
-  settings.fields.each_with_index do |field, i|
+  Sinatra::Application.settings.fields.each_with_index do |field, i|
     alias :"field#{i}" :"#{field.robotize}"
   end
 
@@ -31,7 +31,7 @@ class Item
   end
 
   def self.search_and_sort(sort, direction = :asc, search = '')
-    settings.numeric_sort_fields.each do |field|
+    Sinatra::Application.settings.numeric_sort_fields.each do |field|
       if i = sort.index(field)
         sort[i] = "to_number(#{field}, '9999999.99')"
       end

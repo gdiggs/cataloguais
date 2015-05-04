@@ -20,7 +20,7 @@ configure do
 
   # set the input width based on the number of fields
   set :item_width, 840 / settings.fields.count
-  
+
   # robotize the sort order
   set :sort_order, settings.sort_order.collect {|sort| sort.robotize}
 
@@ -68,7 +68,7 @@ end
 # empty graph urls so they will be recreated the next time
 # the graphs page is visited
 after /(new|update|delete|import)/ do
-  set :graph_urls, {}
+  settings.graph_urls = {}
 end
 
 get '/' do

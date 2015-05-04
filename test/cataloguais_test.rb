@@ -12,7 +12,7 @@ class CataloguaisTest < Test::Unit::TestCase
 
   context "settings" do
     should "have item width" do
-      assert_not_nil settings.item_width
+      assert_not_nil Sinatra::Application.settings.item_width
     end
   end
 
@@ -78,7 +78,7 @@ class CataloguaisTest < Test::Unit::TestCase
       should "have good response" do
         assert last_response.ok?
       end
-      
+
       should "have correct message" do
         assert @response["message"] =~ /deleted/
       end
@@ -95,7 +95,7 @@ class CataloguaisTest < Test::Unit::TestCase
     end
 
     should "have the right number of fields and methods" do
-      settings.fields.each_with_index do |field, i|
+      Sinatra::Application.settings.fields.each_with_index do |field, i|
         assert @item.respond_to?(field.robotize), "Item didn't respond to #{field.robotize}"
         assert @item.respond_to?("field#{i}"), "Item didn't respond to field#{i}"
       end
@@ -103,7 +103,7 @@ class CataloguaisTest < Test::Unit::TestCase
 
     context ".fields" do
       should "return the correct fields" do
-        assert_equal [:created_at, :updated_at] | settings.fields.collect{ |field| field.robotize.to_sym }, Item.fields
+        assert_equal [:created_at, :updated_at] | Sinatra::Application.settings.fields.collect{ |field| field.robotize.to_sym }, Item.fields
       end
     end
   end
