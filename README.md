@@ -7,16 +7,18 @@
 
 ### Installation
 You must have [Postgres](http://www.postgresql.org/) installed prior to running Cataloguais. On OS X with homebrew, you can just do `brew install postgres`.
+You also need memcached.
 
-Once you have Postgres running and have cloned the app to your local directory, you can run:
+Once you have Postgres and memcached running and have cloned the app to your local directory, you can run:
 
 ```
+createdb cataloguais
 bundle install
 ./bin/cataloguais
 ```
 
 ### Configuration
-Specify an `ENV['DATABASE_URL']` variable to point to the correct postgres instance.
+Specify an `ENV['DATABASE_URL']` variable to point to the correct postgres instance. By default, the app will use a `cataloguais` database.
 
 You should also add an `ENV['ADMIN_PASSWORD']` variable if you want to allow editing/adding of items.
 
